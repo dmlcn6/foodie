@@ -12,6 +12,9 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     
     var objects = [String]()
     
+    //DB access\\
+    var spoonApiAccess:SpoonApi = SpoonApi()
+    
     @IBOutlet weak var recipeTableView: UITableView!
     
     override func viewDidLoad() {
@@ -19,6 +22,11 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
 
         // Do any additional setup after loading the view.
         objects = ["recipe1","recipe2","Recipe3", "recipe4","recipe5","Recipe6"]
+        
+        
+        //loads only once\\
+        let response = spoonApiAccess.populateExplorePage()
+        print(response)
     }
 
     override func didReceiveMemoryWarning() {
@@ -88,8 +96,6 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         
         self.present(alertCont, animated: true, completion: nil)
     }
-
-    
 
     
     // MARK: - Navigation
