@@ -8,14 +8,11 @@
 
 import UIKit
 
-class ShowRecipeViewController: UIViewController {
+class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // subView segmentor \\
     @IBOutlet weak var recipeInfoSegmentor: UISegmentedControl!
-    
-    // sub views \\
-    @IBOutlet weak var ingredientsView: UIView!
-    @IBOutlet weak var instructionsView: UIView!
+    @IBOutlet weak var recipeInfoTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +24,37 @@ class ShowRecipeViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - TableView
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //performSegue(withIdentifier: "showRecipe", sender: self)
+    }
+    
+    // Configure the cell \\
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+
+        //get resuable cell name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeInfoCell", for: indexPath)
+        
+        
+        
+        /*
+        set buttons targe func name
+        cell.recipeLikeButton.addTarget(self, action: #selector(), for: .touchUpInside)
+        cell.recipeAddButton.addTarget(self, action: #selector(), for: .touchUpInside)
+        */
+        
+        return cell
     }
     
 
