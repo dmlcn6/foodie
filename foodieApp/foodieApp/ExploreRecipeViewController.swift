@@ -9,30 +9,33 @@
 import UIKit
 
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
+    // MARK: - Class Members
     var objects = [String]()
     
-    //DB access\\
+    //DB access
     var spoonApiAccess:SpoonApi = SpoonApi()
-    
+
     @IBOutlet weak var recipeTableView: UITableView!
     
+    
+    // MARK: - ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        objects = ["recipe1","recipe2","Recipe3", "recipe4","recipe5","Recipe6"]
+        objects = ["recipe1","recipe2","Recipe3","recipe4","recipe5","Recipe6"]
         
         
-        //loads only once\\
-        let response = spoonApiAccess.populateExplorePage()
-        print(response)
+        let recipeParams = ""
+        
+        getRecipes(parameters: recipeParams)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     // MARK: - TableView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -41,7 +44,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return objects.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -70,6 +73,10 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
+    
+    // MARK: - TableView Actions
+    
+    // Add recipe to list of like recipes
     @IBAction func likeRecipe(sender: UIButton){
         let title = objects[sender.tag] as String
         
@@ -81,6 +88,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         print("hello")
     }
     
+    // Add recipe to Weekly Meal
     @IBAction func addRecipe(sender: UIButton){
         let title = objects[sender.tag] as String
         
@@ -88,13 +96,34 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         
         let alertCont: UIAlertController = UIAlertController(title: "Added", message: alertString, preferredStyle: .alert)
         
-        //set the confirm action
+        // set the confirm action
         let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         
-        //add confirm button to alert
+        // add confirm button to alert
         alertCont.addAction(confirmAction)
         
         self.present(alertCont, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - SpoonApi
+    
+    // Populates the tableView with recipes
+    func getRecipes(parameters: String){
+        let params = ""
+        
+        //loads only once\\
+        spoonApiAccess.getExplorePageData(urlParams: params) {
+            (data, errorStr) -> Void in
+            if let errorString = errorStr {
+                print("::ERROR:: \(errorString)")
+            } else {
+                if let data = data {
+                    let dataString = String(data: data, encoding: String.Encoding.utf8)
+                    print("::DATASTRING:: \(dataString as Any)")
+                }
+            }
+        }
     }
 
     
@@ -105,9 +134,10 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if (segue.identifier == "showRecipe"){
-            
+            if let destination = segue.destination as? ShowRecipeViewController,
+                let selectedIndex = recipeTableView.indexPathForSelectedRow{
+                destination.title = objects[selectedIndex.row]
+            }
         }
     }
- 
-
 }

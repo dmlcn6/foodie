@@ -6,7 +6,7 @@
 //  Copyright © 2017 DLopezPrograms. All rights reserved.
 //
 
-// The doPost method makes the POST and then gets a response that is a Data object.
+// The getExplorePageData method makes the POST and then gets a response that is a Data object.
 // The Data object is likely going to be JSON sent as a response from the server
 // that needs to be parsed (this example does not parse it).
 
@@ -33,22 +33,17 @@
 import UIKit
 import Foundation
 
-
 class SpoonApi: NSObject {
-    //shared instance: Singleton\\
-    static let sharedInstance = SpoonApi()
-    
+    // MARK: - Class Members
     let baseURL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
+    let recipeURI = "recipes/search?"
     
     var recipeCache = [String:Any]()
     var httpReturnValue = HTTPURLResponse()
     var jsonResponse = Data()
     
-    func getExplorePageData(toURLString: String, dataString: String, completionHandler: @escaping (Data?, String?) -> Void) {
-        
-        //add params for query\\
-        //paramName=param&paramName=param
-        
+    // MARK: - ViewController
+    func getExplorePageData(urlParams:String, completionHandler: @escaping (Data?, String?) -> Void) {
         /*
          diet - pescetarian, lacto vegetarian, ovo vegetarian, vegan, and vegetarian
          excludeIngredients - comma-separated list of ingredients
@@ -59,76 +54,60 @@ class SpoonApi: NSObject {
          offset - number of results to skip  (between 0 and 900).
          query - (natural language) recipe search
          type - main course, side dish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, or drink
-         */
-        
-        
-        let recipeURI = "recipes/search?"
-        
-        let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course"
-        
-        let fullURLstring:String = "\(baseURL)\(recipeURI)\(params)"
-    
-    }
-    
-    func populateExplorePage() -> HTTPURLResponse{
-        //add params for query\\
-        //paramName=param&paramName=param
-        
-        /*
-          diet - pescetarian, lacto vegetarian, ovo vegetarian, vegan, and vegetarian
-          excludeIngredients - comma-separated list of ingredients
-          instructionsRequired - BOOL: Whether the recipes must have instructions.
-          intolerances - comma-separated list of intolerances. %2C+ == comma and space after comma
-          limitLicense - should have an open license that allows for displaying with proper attribution.
-          number - number of results to return  (between 0 and 100).
-          offset - number of results to skip  (between 0 and 900).
-          query - (natural language) recipe search
-          type - main course, side dish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, or drink
         */
         
-        let recipeURI = "recipes/search?"
-        
+        //paramName=param&paramName=param
         let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course"
         
         let fullURLstring:String = "\(baseURL)\(recipeURI)\(params)"
         
-        var urlRequest = URLRequest(url: URL(string:fullURLstring)! as URL)
-        urlRequest.httpMethod = "GET"
-        urlRequest.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-
-        let headers = [
-            "cache-control": "no-cache",
-            "accept": "application/json",
-            "content-type": "application/json",
-            "x-mashape-key": "0NXqyVUB4cmsh4im2YPEAGkKz59Bp1nEIIcjsnXKjfCE4bbHBq"
-        ]
+        // Session Configuration \\
+        let config = URLSessionConfiguration.default
         
-        urlRequest.allHTTPHeaderFields = headers
+        // Load configuration into Session \\
+        let session = URLSession(configuration: config)
         
-        let session = URLSession.shared
-        
-        let dataTask = session.dataTask(with: urlRequest as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print("ERROR IN GET \(error!)")
-            } else {
-                if let httpResponse = response as? HTTPURLResponse,
-                    let responseDesc = response?.description ,
-                    let jsonResponse = data{
-                    
-                    self.httpReturnValue = httpResponse
-                    print(("\n\nRESPONSE:: \(responseDesc)\n\n") as String)
-                    print("\n\nBODY: COUNT: \(jsonResponse.count))\n\n")
-                    let dataString:String = String(data: jsonResponse, encoding: String.Encoding.utf8)!
-                    print("\n\nBODY: DATA: \(dataString))\n\n")
-                    
+        // Make sure url is valid \\
+        if let url = URL(string: fullURLstring) {
+            
+            var urlRequest = URLRequest(url: url)
+            
+            urlRequest.httpMethod = "GET"
+            
+            // Request Headers for GET \\
+            let headers = [
+                "cache-control": "no-cache",
+                "accept": "application/json",
+                "content-type": "application/json",
+                "x-mashape-key": "0NXqyVUB4cmsh4im2YPEAGkKz59Bp1nEIIcjsnXKjfCE4bbHBq"
+            ]
+            
+            urlRequest.allHTTPHeaderFields = headers
+            
+            // Adding HTTP body for POST \\
+            //let httpBody = dataString.data(using: .utf8)
+            //urlRequest.httpBody = httpBody
+            
+            let task = session.dataTask(with: urlRequest) {
+                (data, response, error) in
+                
+                if error != nil {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(nil, error!.localizedDescription)
+                    })
+                } else {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(data, nil)
+                    })
                 }
+                
             }
-        })
-        
-        dataTask.resume()
-        
-        return httpReturnValue
-        
+            
+            task.resume()
+        } else {
+            DispatchQueue.main.sync(execute: {
+                completionHandler(nil, "\(fullURLstring) is invalid")
+            })
+        }
     }
-    
 }

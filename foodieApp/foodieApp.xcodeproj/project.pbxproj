@@ -73,11 +73,11 @@
 				E0B154941E63AECE000CE4C2 /* Info.plist */,
 				E0B1548C1E63AECE000CE4C2 /* foodieApp.xcdatamodeld */,
 				E0B1549A1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift */,
+				E01E98A31E64F4250049DDDE /* SpoonApi.swift */,
 				E0B154A01E64A653000CE4C2 /* ExploreRecipeViewController.swift */,
 				E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */,
 				E0B1549E1E63CA85000CE4C2 /* ShowRecipeViewController.swift */,
 				E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */,
-				E01E98A31E64F4250049DDDE /* SpoonApi.swift */,
 			);
 			path = foodieApp;
 			sourceTree = "<group>";
