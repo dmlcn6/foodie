@@ -1,3 +1,7 @@
-# Ignore hidden DS_Store files
+# Ignore hidden DS_Store files and swift userData
 *.DS_Store
+
+# Ignore swift userData
 xcuserdata/
+*.xcuserstate
+
