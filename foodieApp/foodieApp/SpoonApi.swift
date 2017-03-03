@@ -38,7 +38,7 @@ class SpoonApi: NSObject {
     let baseURL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
     let recipeURI = "recipes/search?"
     
-    var recipeCache = [String:Any]()
+    var recipesArray = [Recipe]()
     var httpReturnValue = HTTPURLResponse()
     var jsonResponse = Data()
     
@@ -88,6 +88,24 @@ class SpoonApi: NSObject {
             //let httpBody = dataString.data(using: .utf8)
             //urlRequest.httpBody = httpBody
             
+            /*let task = session.dataTask(with: urlRequest){
+                (data, response, error) in
+                
+                if error != nil {
+                    //create error code in class
+                }
+                else {
+                    //calls to parse the data received
+                    if let returnData = data as Data{
+                        parseJson(data: data)
+
+                    }else {
+                        //error data couldnt be casted to Data Class
+                    }
+                }
+                
+            } */
+            
             let task = session.dataTask(with: urlRequest) {
                 (data, response, error) in
                 
@@ -108,6 +126,43 @@ class SpoonApi: NSObject {
             DispatchQueue.main.sync(execute: {
                 completionHandler(nil, "\(fullURLstring) is invalid")
             })
+            
+            //fullURLstring is invalid
         }
     }
+    
+    func parseJson(data: Data){
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
+            
+            /*
+             if let results = root["results"] as? [String:Any] {
+             print("PARSEJSON \(results)\n\n\n")
+             }
+             */
+            
+            //var resultsArray = json["results"] as? [String:Any]
+            
+            for (key, value) in json{
+                print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                if (key == "results"){
+                    if let resultsArray = value as? [[String:Any]] {
+                        print("\n\nRESULTSARRAY\(resultsArray)\n\n")
+                        
+                        
+                        for result in resultsArray {
+                            print("\n\nRESULTSPART\(result)\n\n")
+                            
+                            if let recipeTitle = result["title"] as? String,
+                                let recipeId = result["id"] as? Int,
+                                let recipeImage = result["image"] as? UIImage{
+                                
+                                let newRecipe:Recipe = Recipe(name: recipeTitle, image: recipeImage, id: recipeId)
+                                recipesArray.append(newRecipe)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } //end of parseJson
 }

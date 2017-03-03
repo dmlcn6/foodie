@@ -11,6 +11,7 @@ import UIKit
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: - Class Members
     var objects = [String]()
+    var recipesArray = [Recipe]()
     
     //DB access
     var spoonApiAccess:SpoonApi = SpoonApi()
@@ -58,6 +59,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         let cell = tableView.dequeueReusableCell(withIdentifier: "exploreRecipeCell", for: indexPath) as! ExploreRecipeTableViewCell
         
         //set recipeImageView
+        
         
         //set recipeLabel
         cell.recipeLabel.text = objects[indexPath.row]
@@ -120,11 +122,61 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             } else {
                 if let data = data {
                     let dataString = String(data: data, encoding: String.Encoding.utf8)
-                    print("::DATASTRING:: \(dataString as Any)")
+                    print("\n\n::DATASTRING:: \(dataString)\n\n\n")
+                    
+                    self.parseJson(data: data)
                 }
             }
         }
     }
+    
+    func getParamsForRecipes(){
+        
+    }
+    
+    func parseJson(data: Data){
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
+            
+            /*
+            if let results = root["results"] as? [String:Any] {
+                print("PARSEJSON \(results)\n\n\n")
+            }
+            */
+            
+            //var resultsArray = json["results"] as? [String:Any]
+          
+            for (key, value) in json{
+                print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                if (key == "results"){
+                    if let resultsArray = value as? [[String:Any]] {
+                        print("\n\nRESULTSARRAY\(resultsArray)\n\n")
+                        
+                        
+                        for result in resultsArray {
+                            print("\n\nRESULTSPART\(result)\n\n")
+                            
+                            if let recipeTitle = result["title"] as? String,
+                                let recipeId = result["id"] as? Int,
+                                let recipeImage = result["image"] as? UIImage{
+                                
+                                let newRecipe:Recipe = Recipe(name: recipeTitle, image: recipeImage, id: recipeId)
+                                recipesArray.append(newRecipe)
+                            }
+                            print("\n\nTTITLE::\(result["title"])\n\n")
+                        }
+                    }
+                }
+            }
+                
+            print("JSONNNNNNN\(json)\n\n")
+            //print("\(json["results"])")
+            
+            
+            
+            
+
+        }
+    } //end of parseJson
 
     
     // MARK: - Navigation

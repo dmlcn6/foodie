@@ -9,11 +9,13 @@
 import UIKit
 
 class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    // MARK: - Class Members
     
     // subView segmentor \\
     @IBOutlet weak var recipeInfoSegmentor: UISegmentedControl!
     @IBOutlet weak var recipeInfoTableView: UITableView!
     
+    // MARK: - ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,7 +46,7 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
 
         //get resuable cell name
-        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeInfoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeInfoCell", for: indexPath) as! RecipeInfoTableViewCell
         
         
         

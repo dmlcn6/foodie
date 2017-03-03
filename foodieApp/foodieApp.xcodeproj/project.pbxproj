@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00D4FCE1E67303B00BC4652 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00D4FCD1E67303B00BC4652 /* Recipe.swift */; };
 		E01E98A41E64F4250049DDDE /* SpoonApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E98A31E64F4250049DDDE /* SpoonApi.swift */; };
 		E01E98A61E656A1C0049DDDE /* RecipeInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */; };
 		E072036E1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E00D4FCD1E67303B00BC4652 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		E01E98A31E64F4250049DDDE /* SpoonApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpoonApi.swift; sourceTree = "<group>"; };
 		E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeInfoTableViewCell.swift; sourceTree = "<group>"; };
 		E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecipeTableViewCell.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */,
 				E0B1549E1E63CA85000CE4C2 /* ShowRecipeViewController.swift */,
 				E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */,
+				E00D4FCD1E67303B00BC4652 /* Recipe.swift */,
 			);
 			path = foodieApp;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 				E0B1549B1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift in Sources */,
 				E01E98A41E64F4250049DDDE /* SpoonApi.swift in Sources */,
 				E0B154A11E64A653000CE4C2 /* ExploreRecipeViewController.swift in Sources */,
+				E00D4FCE1E67303B00BC4652 /* Recipe.swift in Sources */,
 				E0B1549F1E63CA85000CE4C2 /* ShowRecipeViewController.swift in Sources */,
 				E01E98A61E656A1C0049DDDE /* RecipeInfoTableViewCell.swift in Sources */,
 			);
