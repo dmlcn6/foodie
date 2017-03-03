@@ -74,12 +74,14 @@ class SpoonApi: NSObject {
             
             urlRequest.httpMethod = "GET"
             
+            
+            
             // Request Headers for GET \\
             let headers = [
                 "cache-control": "no-cache",
                 "accept": "application/json",
                 "content-type": "application/json",
-                "x-mashape-key": "0NXqyVUB4cmsh4im2YPEAGkKz59Bp1nEIIcjsnXKjfCE4bbHBq"
+                "x-mashape-key": getAuthKey()
             ]
             
             urlRequest.allHTTPHeaderFields = headers
@@ -165,4 +167,21 @@ class SpoonApi: NSObject {
             }
         }
     } //end of parseJson
+    
+    func getAuthKey() -> String {
+        var keys: NSDictionary?
+        
+        
+        if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
+            keys = NSDictionary(contentsOfFile: path)
+            
+            if let dict = keys {
+                if let apiKey = dict["apiKey"] as? String{
+                    return apiKey
+                }
+            }
+        }
+        
+        return ""
+    }
 }
