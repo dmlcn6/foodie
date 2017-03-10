@@ -15,6 +15,8 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var recipeInfoSegmentor: UISegmentedControl!
     @IBOutlet weak var recipeInfoTableView: UITableView!
     
+    var selectedRecipe: Recipe?
+
     // MARK: - ViewController
     override func viewDidLoad() {
         super.viewDidLoad()

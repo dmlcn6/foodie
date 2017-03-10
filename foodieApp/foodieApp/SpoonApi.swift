@@ -38,11 +38,59 @@ class SpoonApi: NSObject {
     let baseURL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
     let recipeURI = "recipes/search?"
     
+    
     var recipesArray = [Recipe]()
     var httpReturnValue = HTTPURLResponse()
     var jsonResponse = Data()
     
     // MARK: - ViewController
+    func getInstructionData(recipeId: Int, completionHandler: @escaping (Data?, String?) -> Void) {
+        
+        let instructionsURI = "recipes/\(recipeId)/analyzedInstructions?stepBreakdown=true"
+        
+        let fullURLstring:String = "\(baseURL)\(instructionsURI)"
+        
+        // Session Configuration \\
+        let config = URLSessionConfiguration.default
+        
+        // Load configuration into Session \\
+        let session = URLSession(configuration: config)
+        
+        // Make sure url is valid \\
+        let url = URL(string: fullURLstring)
+        
+        var urlRequest = URLRequest(url: url!)
+        
+        urlRequest.httpMethod = "GET"
+        
+        // Request Headers for GET \\
+        let headers = [
+            "cache-control": "no-cache",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "x-mashape-key": getAuthKey()
+        ]
+        
+        urlRequest.allHTTPHeaderFields = headers
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            if error != nil {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(nil, error!.localizedDescription)
+                })
+            } else {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(data, nil)
+                })
+                
+            }
+        }
+        
+        task.resume()
+    }
+    
     func getExplorePageData(urlParams:String, completionHandler: @escaping (Data?, String?) -> Void) {
         /*
          diet - pescetarian, lacto vegetarian, ovo vegetarian, vegan, and vegetarian
@@ -68,69 +116,41 @@ class SpoonApi: NSObject {
         let session = URLSession(configuration: config)
         
         // Make sure url is valid \\
-        if let url = URL(string: fullURLstring) {
+        let url = URL(string: fullURLstring)
+        
+        var urlRequest = URLRequest(url: url!)
+        
+        urlRequest.httpMethod = "GET"
+        
+        
+        
+        // Request Headers for GET \\
+        let headers = [
+            "cache-control": "no-cache",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "x-mashape-key": getAuthKey()
+        ]
+        
+        urlRequest.allHTTPHeaderFields = headers
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) in
             
-            var urlRequest = URLRequest(url: url)
-            
-            urlRequest.httpMethod = "GET"
-            
-            
-            
-            // Request Headers for GET \\
-            let headers = [
-                "cache-control": "no-cache",
-                "accept": "application/json",
-                "content-type": "application/json",
-                "x-mashape-key": getAuthKey()
-            ]
-            
-            urlRequest.allHTTPHeaderFields = headers
-            
-            // Adding HTTP body for POST \\
-            //let httpBody = dataString.data(using: .utf8)
-            //urlRequest.httpBody = httpBody
-            
-            /*let task = session.dataTask(with: urlRequest){
-                (data, response, error) in
-                
-                if error != nil {
-                    //create error code in class
-                }
-                else {
-                    //calls to parse the data received
-                    if let returnData = data as Data{
-                        parseJson(data: data)
-
-                    }else {
-                        //error data couldnt be casted to Data Class
-                    }
-                }
-                
-            } */
-            
-            let task = session.dataTask(with: urlRequest) {
-                (data, response, error) in
-                
-                if error != nil {
-                    DispatchQueue.main.sync(execute: {
-                        completionHandler(nil, error!.localizedDescription)
-                    })
-                } else {
-                    DispatchQueue.main.sync(execute: {
-                        completionHandler(data, nil)
-                    })
-                }
+            if error != nil {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(nil, error!.localizedDescription)
+                })
+            } else {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(data, nil)
+                })
                 
             }
             
-            task.resume()
-        } else {
-            DispatchQueue.main.sync(execute: {
-                completionHandler(nil, "\(fullURLstring) is invalid")
-            })
-            
-            //fullURLstring is invalid
         }
+        
+        task.resume()
     }
     
     func parseJson(data: Data){
@@ -155,10 +175,11 @@ class SpoonApi: NSObject {
                             print("\n\nRESULTSPART\(result)\n\n")
                             
                             if let recipeTitle = result["title"] as? String,
-                                let recipeId = result["id"] as? Int,
-                                let recipeImage = result["image"] as? UIImage{
+                                let recipeId = result["id"] as? Int {
+                                    
                                 
-                                let newRecipe:Recipe = Recipe(name: recipeTitle, image: recipeImage, id: recipeId)
+                                
+                                let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: UIImage())
                                 recipesArray.append(newRecipe)
                             }
                         }

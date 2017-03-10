@@ -13,7 +13,7 @@ class Recipe: NSObject{
     
     // MARK: - Class Members
     var recipeName:String
-    var recipeImage:UIImage
+    var recipeImage:UIImage?
     var recipeId:Int
     
     var instructions:[String] = [String]()
@@ -21,7 +21,7 @@ class Recipe: NSObject{
     
     
     // MARK: - Init
-    init(name:String, image:UIImage, id:Int){
+    init(name:String, id:Int, image:UIImage){
         recipeName = name
         recipeImage = image
         recipeId = id
