@@ -14,6 +14,7 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     // subView segmentor \\
     @IBOutlet weak var recipeInfoSegmentor: UISegmentedControl!
     @IBOutlet weak var recipeInfoTableView: UITableView!
+    @IBOutlet weak var recipeImage: UIImageView!
     
     var selectedRecipe: Recipe?
 
@@ -23,6 +24,13 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
 
         // Do any additional setup after loading the view.
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        recipeInfoTableView.reloadData()
+        if let selectedRecipe = selectedRecipe {
+            recipeImage.image = selectedRecipe.recipeImage
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,7 +45,12 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        if let selectedRecipe = selectedRecipe {
+            return selectedRecipe.instructions.count
+        }
+        else{
+            return 2
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -51,7 +64,9 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
         let cell = tableView.dequeueReusableCell(withIdentifier: "recipeInfoCell", for: indexPath) as! RecipeInfoTableViewCell
         
         
-        
+        if let selectedRecipe = selectedRecipe{
+            cell.infoLabel.text = selectedRecipe.instructions[indexPath.row]
+        }
         /*
         set buttons targe func name
         cell.recipeLikeButton.addTarget(self, action: #selector(), for: .touchUpInside)
