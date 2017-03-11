@@ -35,7 +35,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             
             if let data = data {
                 self.parseExploreJson(data: data)
-                
+                self.recipeTableView.reloadData()
             }else{
                 //internet could be down
                 // or some other problem
@@ -76,7 +76,8 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             
             if let data = data {
                 self.parseInstructionJson(data: data)
-                //self.performSegue(withIdentifier: "showRecipe", sender: self)
+                
+                self.performSegue(withIdentifier: "showRecipe", sender: self)
             }else{
                 //internet could be down
                 // or some other problem
@@ -150,16 +151,31 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     
     
     func parseInstructionJson(data: Data){
-        print("NEWDATA \(data[0])")
-        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [[String:Any]] {
-            print("NEWJSONN \(json)")
+        if let selectedIndexPath = recipeTableView.indexPathForSelectedRow {
+        
+            print("NEWDATA \(data[0])")
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [[String:Any]] {
+                print("NEWJSONN \(json)")
 
-            let dataArray: [String:Any] = json[0]
-            for (key, value) in dataArray {
-                print("INSTRUCTIONKEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                let dataArray: [String:Any] = json[0]
+                for (key, value) in dataArray {
+                    print("\n\nINSTRUCTIONKEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                    if (key == "steps"){
+                         if let instructionResults = value as? [[String:Any]] {
+                            print("INSTRUCTION ARRAY \(instructionResults)\n\n")
+                            for instruction in instructionResults{
+                                print("INSTRUCTIONS \(instruction)\n\n")
+                                for (key,value) in instruction {
+                                    if let step = value as? String, key == "step" {
+                                        print("FINALSTEPS \(value)\n\n")
+                                        recipes[selectedIndexPath.row].instructions.append(step)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            
-            
         }
     }
     
@@ -187,22 +203,21 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                             
                             if let recipeTitle = result["title"] as? String,
                                 let recipeId = result["id"] as? Int,
-                                let imageString = result["image"] as? String {
+                                let image = result["image"] as? String,
+                                let recipeTime = result["readyInMinutes"] as? Int {
                                 
-                                let imageData = Data(base64Encoded: imageString, options: Data.Base64DecodingOptions.ignoreUnknownCharacters)
                                 
-                                if let recipeImageFromString = imageData {
-                                    //let uiImage = UIImage(data: recipeImageFromString)
-                                    //let uiImage1 = UIImage(contentsOfFile: imageString)
-                                    let image = UIImage(data: recipeImageFromString)
+                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(recipeId)-312x150.jpg"
+                                
+                                if let recipeImageUrl = URL(string: baseImageUrl),
+                                    let imageData = try? Data(contentsOf: recipeImageUrl) {
                                     
-                                    if let image = image {
-                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: image)
+                                    let image = UIImage(data: imageData)
+                                    
+                                    if let recipeImage = image{
+                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime)
                                         recipes.append(newRecipe)
                                     }
-                                }else {
-                                    let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: UIImage())
-                                    recipes.append(newRecipe)
                                 }
                             }
                             print("\n\nTTITLE::\(result["title"])\n\n")
