@@ -15,6 +15,7 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var recipeInfoSegmentor: UISegmentedControl!
     @IBOutlet weak var recipeInfoTableView: UITableView!
     @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var recipeTimeLabel: UILabel!
     
     var selectedRecipe: Recipe?
 
@@ -30,6 +31,7 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
         recipeInfoTableView.reloadData()
         if let selectedRecipe = selectedRecipe {
             recipeImage.image = selectedRecipe.recipeImage
+            recipeTimeLabel.text = selectedRecipe.recipeTime.description
         }
     }
 
