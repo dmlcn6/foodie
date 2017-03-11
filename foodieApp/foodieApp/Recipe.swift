@@ -16,19 +16,22 @@ class Recipe: NSObject{
     var recipeId:Int
     var recipeImage:UIImage?
     var recipeTime: Int
+    var recipeServings: Int
     
     
     
     var instructions:[String] = [String]()
+    var ingredients:[String] = [String]()
     
     
     
     // MARK: - Init
-    init(name:String, id:Int, image:UIImage, time:Int){
+    init(name:String, id:Int, image:UIImage, time:Int, servings:Int){
         recipeName = name
         recipeImage = image
         recipeId = id
         recipeTime = time
+        recipeServings = servings
     }
 
     
