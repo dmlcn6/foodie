@@ -36,32 +36,35 @@ import Foundation
 class SpoonApi: NSObject {
     // MARK: - Class Members
     let baseURL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
-    let recipeURI = "recipes/search?"
     
+    // Session Configuration \\
+    let config = URLSessionConfiguration.default
     
     var recipesArray = [Recipe]()
     var httpReturnValue = HTTPURLResponse()
     var jsonResponse = Data()
     
-    // MARK: - ViewController
-    func getInstructionData(recipeId: Int, completionHandler: @escaping (Data?, String?) -> Void) {
-        
-        let instructionsURI = "recipes/\(recipeId)/analyzedInstructions?stepBreakdown=true"
-        
-        let fullURLstring:String = "\(baseURL)\(instructionsURI)"
-        
-        // Session Configuration \\
-        let config = URLSessionConfiguration.default
-        
-        // Load configuration into Session \\
-        let session = URLSession(configuration: config)
-        
+    
+    // MARK: - Global URL Config
+    func configureURLRequest(httpUrl: String, httpAction: String, httpHeaders: [String:String]) -> URLRequest{
         // Make sure url is valid \\
-        let url = URL(string: fullURLstring)
+        let url = URL(string: httpUrl)
         
         var urlRequest = URLRequest(url: url!)
         
-        urlRequest.httpMethod = "GET"
+        urlRequest.httpMethod = httpAction
+        
+        urlRequest.allHTTPHeaderFields = httpHeaders
+        
+        return urlRequest
+    }
+    
+    // MARK: - API Requests
+    func getAdvancedRecipeData(recipeId: Int, completionHandler: @escaping (Data?, String?) -> Void) {
+        
+        let informationURI = "recipes/\(recipeId)/information"
+        
+        let fullURLstring:String = "\(baseURL)\(informationURI)"
         
         // Request Headers for GET \\
         let headers = [
@@ -71,7 +74,10 @@ class SpoonApi: NSObject {
             "x-mashape-key": getAuthKey()
         ]
         
-        urlRequest.allHTTPHeaderFields = headers
+        let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers)
+        
+        // Load configuration into Session \\
+        let session = URLSession(configuration: config)
         
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) in
@@ -84,10 +90,8 @@ class SpoonApi: NSObject {
                 DispatchQueue.main.sync(execute: {
                     completionHandler(data, nil)
                 })
-                
             }
         }
-        
         task.resume()
     }
     
@@ -104,25 +108,13 @@ class SpoonApi: NSObject {
          type - main course, side dish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, or drink
         */
         
+        //base recipe URL
+        let recipeURI = "recipes/search?"
+        
         //paramName=param&paramName=param
         let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course"
         
         let fullURLstring:String = "\(baseURL)\(recipeURI)\(params)"
-        
-        // Session Configuration \\
-        let config = URLSessionConfiguration.default
-        
-        // Load configuration into Session \\
-        let session = URLSession(configuration: config)
-        
-        // Make sure url is valid \\
-        let url = URL(string: fullURLstring)
-        
-        var urlRequest = URLRequest(url: url!)
-        
-        urlRequest.httpMethod = "GET"
-        
-        
         
         // Request Headers for GET \\
         let headers = [
@@ -132,7 +124,10 @@ class SpoonApi: NSObject {
             "x-mashape-key": getAuthKey()
         ]
         
-        urlRequest.allHTTPHeaderFields = headers
+        let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers)
+        
+        // Load configuration into Session \\
+        let session = URLSession(configuration: config)
         
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) in
@@ -145,14 +140,12 @@ class SpoonApi: NSObject {
                 DispatchQueue.main.sync(execute: {
                     completionHandler(data, nil)
                 })
-                
             }
-            
         }
-        
         task.resume()
     }
     
+    // MARK: - Auth Key
     func getAuthKey() -> String {
         var keys: NSDictionary?
         
@@ -166,7 +159,6 @@ class SpoonApi: NSObject {
                 }
             }
         }
-        
         return ""
     }
 }
