@@ -153,42 +153,6 @@ class SpoonApi: NSObject {
         task.resume()
     }
     
-    func parseJson(data: Data){
-        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
-            
-            /*
-             if let results = root["results"] as? [String:Any] {
-             print("PARSEJSON \(results)\n\n\n")
-             }
-             */
-            
-            //var resultsArray = json["results"] as? [String:Any]
-            
-            for (key, value) in json{
-                print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
-                if (key == "results"){
-                    if let resultsArray = value as? [[String:Any]] {
-                        print("\n\nRESULTSARRAY\(resultsArray)\n\n")
-                        
-                        
-                        for result in resultsArray {
-                            print("\n\nRESULTSPART\(result)\n\n")
-                            
-                            if let recipeTitle = result["title"] as? String,
-                                let recipeId = result["id"] as? Int {
-                                    
-                                
-                                
-                                let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: UIImage())
-                                recipesArray.append(newRecipe)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    } //end of parseJson
-    
     func getAuthKey() -> String {
         var keys: NSDictionary?
         
