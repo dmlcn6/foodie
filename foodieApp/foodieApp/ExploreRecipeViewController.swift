@@ -71,11 +71,11 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         
         let selectedRecipeId = recipes[indexPath.row].recipeId
         
-        spoonApiAccess.getInstructionData(recipeId: selectedRecipeId){
+        spoonApiAccess.getAdvancedRecipeData(recipeId: selectedRecipeId){
             (data,error) in
             
             if let data = data {
-                self.parseInstructionJson(data: data)
+                self.parseAdvancedRecipeJson(data: data)
                 
                 self.performSegue(withIdentifier: "showRecipe", sender: self)
             }else{
@@ -150,7 +150,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     
     
     
-    func parseInstructionJson(data: Data){
+    func parseAdvancedRecipeJson(data: Data){
         if let selectedIndexPath = recipeTableView.indexPathForSelectedRow {
         
             print("NEWDATA \(data[0])")
@@ -203,7 +203,6 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                             
                             if let recipeTitle = result["title"] as? String,
                                 let recipeId = result["id"] as? Int,
-                                let image = result["image"] as? String,
                                 let recipeTime = result["readyInMinutes"] as? Int {
                                 
                                 
@@ -215,7 +214,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                                     let image = UIImage(data: imageData)
                                     
                                     if let recipeImage = image{
-                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime)
+                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
                                         recipes.append(newRecipe)
                                     }
                                 }
