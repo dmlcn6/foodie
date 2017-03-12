@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: - Class Members
     var objects = [String]()
@@ -55,7 +56,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     
     
     
-    // MARK: - TableView
+    // MARK: - TableView Config
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -81,6 +82,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             }else{
                 //internet could be down
                 // or some other problem
+                //alert user that there was a problem and try again
             }
         }
         
@@ -93,7 +95,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         let cell = tableView.dequeueReusableCell(withIdentifier: "exploreRecipeCell", for: indexPath) as! ExploreRecipeTableViewCell
         
         //set recipeImageView
-        cell.imageView?.image = recipes[indexPath.row].recipeImage
+        cell.recipeImageView.image = recipes[indexPath.row].recipeImage
         
         //set recipeLabel
         cell.recipeLabel.text = recipes[indexPath.row].recipeName
@@ -110,7 +112,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     
-    // MARK: - TableView Actions
+    // MARK: - TableView Buttons
     
     // Add recipe to list of like recipes
     @IBAction func likeRecipe(sender: UIButton){
@@ -121,7 +123,6 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         
         self.present(activityCont, animated: true, completion: nil)
         
-        print("hello")
     }
     
     // Add recipe to Weekly Meal
@@ -152,23 +153,44 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     
     func parseAdvancedRecipeJson(data: Data){
         if let selectedIndexPath = recipeTableView.indexPathForSelectedRow {
-        
-            print("NEWDATA \(data[0])")
-            if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [[String:Any]] {
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any] {
                 print("NEWJSONN \(json)")
-
-                let dataArray: [String:Any] = json[0]
-                for (key, value) in dataArray {
+                
+                for (key, value) in json {
                     print("\n\nINSTRUCTIONKEY::\(key) \n\n RESULTS::\(value)\n\n\n")
-                    if (key == "steps"){
-                         if let instructionResults = value as? [[String:Any]] {
-                            print("INSTRUCTION ARRAY \(instructionResults)\n\n")
-                            for instruction in instructionResults{
-                                print("INSTRUCTIONS \(instruction)\n\n")
+                    if (key == "servings"){
+                        if let servings = value as? Int {
+                            recipes[selectedIndexPath.row].recipeServings = servings
+                        }
+                    }
+                    if (key == "analyzedInstructions"){
+                        if let instructions = value as? [[String:Any]] {
+                            for instruction in instructions {
                                 for (key,value) in instruction {
-                                    if let step = value as? String, key == "step" {
-                                        print("FINALSTEPS \(value)\n\n")
-                                        recipes[selectedIndexPath.row].instructions.append(step)
+                                    if (key == "steps"){
+                                        if let instructionResults = value as? [[String:Any]] {
+                                            print("INSTRUCTION ARRAY \(instructionResults)\n\n")
+                                            for instruction in instructionResults{
+                                                print("INSTRUCTIONS \(instruction)\n\n")
+                                                for (key,value) in instruction {
+                                                    if let step = value as? String, key == "step" {
+                                                        print("FINALSTEPS \(value)\n\n")
+                                                        recipes[selectedIndexPath.row].instructions.append(step)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (key == "extendedIngredients"){
+                        if let ingredients = value as? [[String:Any]] {
+                            for ingredient in ingredients {
+                                for (key,value) in ingredient {
+                                    if let newIngredient = value as? String, key == "originalString"{
+                                        recipes[selectedIndexPath.row].ingredients.append(newIngredient)
                                     }
                                 }
                             }
@@ -193,20 +215,22 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             //var resultsArray = json["results"] as? [String:Any]
           
             for (key, value) in json{
-                print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                //print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
                 if (key == "results"){
                     if let resultsArray = value as? [[String:Any]] {
-                        print("\n\nRESULTSARRAY\(resultsArray)\n\n")
+                        //print("\n\nRESULTSARRAY\(resultsArray)\n\n")
                         
                         for result in resultsArray {
-                            print("\n\nRESULTSPART\(result)\n\n")
+                            //print("\n\nRESULTSPART\(result)\n\n")
                             
                             if let recipeTitle = result["title"] as? String,
                                 let recipeId = result["id"] as? Int,
                                 let recipeTime = result["readyInMinutes"] as? Int {
                                 
                                 
-                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(recipeId)-312x150.jpg"
+                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(recipeId)-636x393.jpg"
+                                
+                                //let baseImageUrl = "https://spoonacular.com/recipeImages/\(imageString)"
                                 
                                 if let recipeImageUrl = URL(string: baseImageUrl),
                                     let imageData = try? Data(contentsOf: recipeImageUrl) {
@@ -216,19 +240,19 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                                     if let recipeImage = image{
                                         let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
                                         recipes.append(newRecipe)
+                                    }else {
+                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: UIImage(), time: recipeTime, servings: 0)
+                                        recipes.append(newRecipe)
                                     }
                                 }
                             }
-                            print("\n\nTTITLE::\(result["title"])\n\n")
+                            //print("\n\nTTITLE::\(result["title"])\n\n")
                         }
                     }
                 }
             }
-                
-            print("JSONNNNNNN\(json)\n\n")
-            //print("\(json["results"])")
         }
-    } //end of parseJson
+    } //end of parseExploreJson
 
     
     // MARK: - Navigation
