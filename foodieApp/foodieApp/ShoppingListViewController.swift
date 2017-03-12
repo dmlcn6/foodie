@@ -1,17 +1,29 @@
 //
-//  ExploreRecipeTableViewController.swift
+//  ShoppingListViewController.swift
 //  foodieApp
 //
-//  Created by Mr. Lopez on 2/26/17.
+//  Created by Mr. Lopez on 3/12/17.
 //  Copyright © 2017 DLopezPrograms. All rights reserved.
 //
 
 import UIKit
 
-class ExploreRecipeTableViewController: UITableViewController {
-
-     var objects = [String]()
+class CollapsableShoppingList {
+    let label: String
+    let image: UIImage?
+    let children: [CollapsableShoppingList]
+    var isCollapsed: Bool
     
+    init(label: String, image: UIImage? = nil, children: [CollapsableShoppingList] = [], isCollapsed: Bool = true) {
+        self.label = label
+        self.image = image
+        self.children = children
+        self.isCollapsed = isCollapsed
+    }
+}
+
+class ShoppingListViewController: UITableViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,8 +32,6 @@ class ExploreRecipeTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        objects = ["recipe1","recipe2","Recipe3", "recipe4","recipe5","Recipe6"]
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,68 +43,23 @@ class ExploreRecipeTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return objects.count
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showRecipe", sender: self)
+        return 0
     }
 
-    
-    // Configure the cell \\
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //get resuable cell name
-        let cell = tableView.dequeueReusableCell(withIdentifier: "exploreRecipeCell", for: indexPath) as! ExploreRecipeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        //set recipeImageView
-        
-        //set recipeLabel
-        cell.recipeLabel.text = objects[indexPath.row]
-        
-        //set button tags so the indexPath is know in the buttons func
-        cell.recipeLikeButton.tag = indexPath.row
-        cell.recipeAddButton.tag = indexPath.row
-        
-        //set buttons targe func name
-        cell.recipeLikeButton.addTarget(self, action: #selector(likeRecipe(sender:)), for: .touchUpInside)
-        cell.recipeAddButton.addTarget(self, action: #selector(addRecipe(sender:)), for: .touchUpInside)
-        
+        // Configure the cell...
+
         return cell
     }
-    
-    
-    @IBAction func likeRecipe(sender: UIButton)
-    {
-        let title = objects[sender.tag] as String
-        
-        
-        let activityCont: UIActivityViewController = UIActivityViewController(activityItems: [title], applicationActivities: nil)
-        
-        self.present(activityCont, animated: true, completion: nil)
-    }
-    
-    @IBAction func addRecipe(sender: UIButton)
-    {
-        let title = objects[sender.tag] as String
-        
-        let alertString = "Added \(title) to your list!"
-        
-        let alertCont: UIAlertController = UIAlertController(title: "Added", message: alertString, preferredStyle: .alert)
-        
-        //set the confirm action
-        let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        
-        //add confirm button to alert
-        alertCont.addAction(confirmAction)
-        
-        self.present(alertCont, animated: true, completion: nil)
-    }
+    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -131,22 +96,14 @@ class ExploreRecipeTableViewController: UITableViewController {
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        
-        if (segue.identifier == "showRecipe"){
-            if let destination = segue.destination as? ShowRecipeViewController,
-                let selectedIndex = tableView.indexPathForSelectedRow{
-                destination.title = objects[selectedIndex.row]
-            }
-            
-        }
     }
-    
+    */
 
 }
