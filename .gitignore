@@ -5,3 +5,8 @@
 xcuserdata/
 *.xcuserstate
 
+foodieApp/foodieApp.xcodeproj/project.xcworkspace/xcuserdata/Mr_Lopez.xcuserdatad/UserInterfaceState.xcuserstate
+
+#Ignore specific Plist
+foodieApp/foodieApp/Support/*.plist
+
