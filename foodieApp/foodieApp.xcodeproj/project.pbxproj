@@ -12,12 +12,12 @@
 		E01E98A61E656A1C0049DDDE /* RecipeInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */; };
 		E029DD511E69E442006449B7 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = E029DD501E69E442006449B7 /* Keys.plist */; };
 		E072036E1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */; };
+		E0A616AE1E75D45500812B6A /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A616AD1E75D45500812B6A /* ShoppingListViewController.swift */; };
 		E0B154861E63AECE000CE4C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B154851E63AECE000CE4C2 /* AppDelegate.swift */; };
 		E0B1548B1E63AECE000CE4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154891E63AECE000CE4C2 /* Main.storyboard */; };
 		E0B1548E1E63AECE000CE4C2 /* foodieApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0B1548C1E63AECE000CE4C2 /* foodieApp.xcdatamodeld */; };
 		E0B154901E63AECE000CE4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */; };
 		E0B154931E63AECE000CE4C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154911E63AECE000CE4C2 /* LaunchScreen.storyboard */; };
-		E0B1549B1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B1549A1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift */; };
 		E0B1549F1E63CA85000CE4C2 /* ShowRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B1549E1E63CA85000CE4C2 /* ShowRecipeViewController.swift */; };
 		E0B154A11E64A653000CE4C2 /* ExploreRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B154A01E64A653000CE4C2 /* ExploreRecipeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +28,7 @@
 		E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeInfoTableViewCell.swift; sourceTree = "<group>"; };
 		E029DD501E69E442006449B7 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecipeTableViewCell.swift; sourceTree = "<group>"; };
+		E0A616AD1E75D45500812B6A /* ShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		E0B154821E63AECE000CE4C2 /* foodieApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foodieApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0B154851E63AECE000CE4C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0B1548A1E63AECE000CE4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0B154921E63AECE000CE4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0B154941E63AECE000CE4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E0B1549A1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecipeTableViewController.swift; sourceTree = "<group>"; };
 		E0B1549E1E63CA85000CE4C2 /* ShowRecipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRecipeViewController.swift; sourceTree = "<group>"; };
 		E0B154A01E64A653000CE4C2 /* ExploreRecipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecipeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,13 +85,13 @@
 				E0B154911E63AECE000CE4C2 /* LaunchScreen.storyboard */,
 				E0B154941E63AECE000CE4C2 /* Info.plist */,
 				E0B1548C1E63AECE000CE4C2 /* foodieApp.xcdatamodeld */,
-				E0B1549A1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift */,
+				E00D4FCD1E67303B00BC4652 /* Recipe.swift */,
 				E01E98A31E64F4250049DDDE /* SpoonApi.swift */,
 				E0B154A01E64A653000CE4C2 /* ExploreRecipeViewController.swift */,
-				E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */,
 				E0B1549E1E63CA85000CE4C2 /* ShowRecipeViewController.swift */,
+				E0A616AD1E75D45500812B6A /* ShoppingListViewController.swift */,
+				E072036D1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift */,
 				E01E98A51E656A1C0049DDDE /* RecipeInfoTableViewCell.swift */,
-				E00D4FCD1E67303B00BC4652 /* Recipe.swift */,
 			);
 			path = foodieApp;
 			sourceTree = "<group>";
@@ -172,9 +172,9 @@
 				E0B154861E63AECE000CE4C2 /* AppDelegate.swift in Sources */,
 				E0B1548E1E63AECE000CE4C2 /* foodieApp.xcdatamodeld in Sources */,
 				E072036E1E64C4600071CF76 /* ExploreRecipeTableViewCell.swift in Sources */,
-				E0B1549B1E63B2FE000CE4C2 /* ExploreRecipeTableViewController.swift in Sources */,
 				E01E98A41E64F4250049DDDE /* SpoonApi.swift in Sources */,
 				E0B154A11E64A653000CE4C2 /* ExploreRecipeViewController.swift in Sources */,
+				E0A616AE1E75D45500812B6A /* ShoppingListViewController.swift in Sources */,
 				E00D4FCE1E67303B00BC4652 /* Recipe.swift in Sources */,
 				E0B1549F1E63CA85000CE4C2 /* ShowRecipeViewController.swift in Sources */,
 				E01E98A61E656A1C0049DDDE /* RecipeInfoTableViewCell.swift in Sources */,
