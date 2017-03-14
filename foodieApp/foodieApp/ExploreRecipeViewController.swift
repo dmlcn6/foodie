@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: - Class Members
     var objects = [String]()
-    var recipes = [Recipe]()
+    var recipes = [FoodieRecipe]()
+    var parseData:Data = Data()
     
     //DB access
     var spoonApiAccess:SpoonApi = SpoonApi()
@@ -27,8 +29,6 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         // Do any additional setup after loading the view.
         objects = ["recipe1","recipe2","Recipe3","recipe4","recipe5","Recipe6"]
         
-        
-        //let recipeParams = ""
         
         //loads only once\\
         spoonApiAccess.getExplorePageData(urlParams: ""){
@@ -128,18 +128,143 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     // Add recipe to Weekly Meal
     @IBAction func addRecipe(sender: UIButton){
         let title = recipes[sender.tag].recipeName as String
+        var alertString = ""
         
-        let alertString = "Added \(title) to your list!"
+        spoonApiAccess.getAdvancedRecipeData(recipeId: Double(recipes[sender.tag].recipeId)){
+            (data,error) in
+            
+            if let data = data {
+                
+                let recipes = self.recipes
+                let selectedIndexPath = sender.tag
+                
+                if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any] {
+                    print("NEWJSONN \(json)")
+                    
+                    for (key, value) in json {
+                        print("\n\nINSTRUCTIONKEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                        if (key == "servings"){
+                            if let servings = value as? Double {
+                                recipes[selectedIndexPath].recipeServings = servings
+                            }
+                        }
+                        if (key == "analyzedInstructions"){
+                            if let instructions = value as? [[String:Any]] {
+                                for instruction in instructions {
+                                    for (key,value) in instruction {
+                                        if (key == "steps"){
+                                            if let instructionResults = value as? [[String:Any]] {
+                                                print("INSTRUCTION ARRAY \(instructionResults)\n\n")
+                                                for instruction in instructionResults{
+                                                    print("INSTRUCTIONS \(instruction)\n\n")
+                                                    for (key,value) in instruction {
+                                                        if let step = value as? String, key == "step" {
+                                                            print("FINALSTEPS \(value)\n\n")
+                                                            recipes[selectedIndexPath].instructions.append(step)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (key == "extendedIngredients"){
+                            if let ingredients = value as? [[String:Any]] {
+                                for ingredient in ingredients {
+                                    for (key,value) in ingredient {
+                                        if let newIngredient = value as? String, key == "originalString"{
+                                            recipes[selectedIndexPath].ingredients.append(newIngredient)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
+                //save recipe to local context for offline usage
+                let context = DatabaseController.getContext()
+                
+                let savingRecipe = Recipe(context: context)
+                
+                if let image = recipes[sender.tag].recipeImage,
+                    let imageData = UIImageJPEGRepresentation(image, 1.0){
+                    savingRecipe.recipeImage = imageData as NSData
+                }else {
+                    savingRecipe.recipeImage = nil
+                }
+                
+                savingRecipe.recipeId = recipes[sender.tag].recipeId
+                savingRecipe.recipeName = recipes[sender.tag].recipeName
+                savingRecipe.recipeServings = recipes[sender.tag].recipeServings
+                savingRecipe.recipeTime = recipes[sender.tag].recipeTime
+ 
+                let ingsObject = recipes[sender.tag].ingredients
+                
+                for ing in ingsObject {
+                    
+                    let newIng = NSEntityDescription.insertNewObject(forEntityName: "Ingredient", into: context) as? Ingredient
+                    
+                    if let newIng = newIng {
+                        newIng.ingName = ing
+                        savingRecipe.addToIngredientList(newIng)
+                    }
+                }
+                let instructsObject = recipes[sender.tag].instructions 
+                
+                
+                
+                
+                
+                if let ingsObjectData = NSKeyedArchiver.archivedData(withRootObject: ingsObject) as? NSData,
+                    let instructsObjectData = NSKeyedArchiver.archivedData(withRootObject: instructsObject) as? NSData {
+                    
+                    savingRecipe.recipeIngredients = ingsObjectData
+                    savingRecipe.recipeInstructions = instructsObjectData
+                }
+                
+                
+                
+                
+                if(DatabaseController.saveContext() == true) {
+                    alertString = "Added \(title) to your list!"
+                    
+                    let alertCont: UIAlertController = UIAlertController(title: "Added", message: alertString, preferredStyle: .alert)
+                    
+                    // set the confirm action
+                    let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    
+                    // add confirm button to alert
+                    alertCont.addAction(confirmAction)
+                    
+                    self.present(alertCont, animated: true, completion: nil)
+                    
+                } else {
+                    //create an alert to user that Trip didnt save
+                    alertString = "Trip failed to save \(title) to your list!"
+                    
+                    let alertCont: UIAlertController = UIAlertController(title: "Uh Oh, Something went wrong!", message: alertString, preferredStyle: .alert)
+                    
+                    // set the confirm action
+                    let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    
+                    // add confirm button to alert
+                    alertCont.addAction(confirmAction)
+                    
+                    self.present(alertCont, animated: true, completion: nil)
+                }
         
-        let alertCont: UIAlertController = UIAlertController(title: "Added", message: alertString, preferredStyle: .alert)
-        
-        // set the confirm action
-        let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        
-        // add confirm button to alert
-        alertCont.addAction(confirmAction)
-        
-        self.present(alertCont, animated: true, completion: nil)
+                
+            }else{
+                //internet could be down
+                // or some other problem
+                //alert user that there was a problem and try again
+            }
+            
+        }
     }
     
     
@@ -159,7 +284,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                 for (key, value) in json {
                     print("\n\nINSTRUCTIONKEY::\(key) \n\n RESULTS::\(value)\n\n\n")
                     if (key == "servings"){
-                        if let servings = value as? Int {
+                        if let servings = value as? Double {
                             recipes[selectedIndexPath.row].recipeServings = servings
                         }
                     }
@@ -224,11 +349,11 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                             //print("\n\nRESULTSPART\(result)\n\n")
                             
                             if let recipeTitle = result["title"] as? String,
-                                let recipeId = result["id"] as? Int,
-                                let recipeTime = result["readyInMinutes"] as? Int {
+                                let recipeId = result["id"] as? Double,
+                                let recipeTime = result["readyInMinutes"] as? Double {
                                 
                                 
-                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(recipeId)-636x393.jpg"
+                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(recipeId))-480x360.jpg"
                                 
                                 //let baseImageUrl = "https://spoonacular.com/recipeImages/\(imageString)"
                                 
@@ -238,10 +363,10 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                                     let image = UIImage(data: imageData)
                                     
                                     if let recipeImage = image{
-                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
+                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
                                         recipes.append(newRecipe)
                                     }else {
-                                        let newRecipe:Recipe = Recipe(name: recipeTitle, id: recipeId, image: UIImage(), time: recipeTime, servings: 0)
+                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: UIImage(), time: recipeTime, servings: 0)
                                         recipes.append(newRecipe)
                                     }
                                 }
