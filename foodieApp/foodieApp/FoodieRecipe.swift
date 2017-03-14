@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-class Recipe: NSObject{
+class FoodieRecipe: NSObject{
     
     // MARK: - Class Members
     var recipeName:String
-    var recipeId:Int
+    var recipeId:Double
     var recipeImage:UIImage?
-    var recipeTime: Int
-    var recipeServings: Int
+    var recipeTime: Double
+    var recipeServings: Double
     
     
     
@@ -26,7 +26,7 @@ class Recipe: NSObject{
     
     
     // MARK: - Init
-    init(name:String, id:Int, image:UIImage, time:Int, servings:Int){
+    init(name:String, id:Double, image:UIImage, time:Double, servings:Double){
         recipeName = name
         recipeImage = image
         recipeId = id
