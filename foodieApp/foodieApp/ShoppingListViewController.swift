@@ -142,6 +142,13 @@ class ShoppingListViewController: UITableViewController {
         viewModel.isCollapsed = !viewModel.isCollapsed
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (displayedRows[indexPath.row].isDeletable == true){
+            return true
+        }else {
+            return false
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
