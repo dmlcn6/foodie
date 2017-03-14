@@ -10,11 +10,12 @@ import UIKit
 import CoreData
 
 
-class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+    
     // MARK: - Class Members
     var objects = [String]()
     var recipes = [FoodieRecipe]()
-    var parseData:Data = Data()
+    var searchBar = UISearchBar()
     
     //DB access
     var spoonApiAccess:SpoonApi = SpoonApi()
@@ -44,13 +45,27 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        renderSearchBar()
         self.recipeTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Search Bar
+    func renderSearchBar() {
+        searchBar.showsCancelButton = false
+        searchBar.delegate = self
+        self.navigationItem.titleView = searchBar
+    }
+    
+    // MARK: - Keyboard Dismissal
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        //this resigns the first responder also
+        searchBar.endEditing(true)
     }
     
     
@@ -213,21 +228,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                         savingRecipe.addToIngredientList(newIng)
                     }
                 }
-                let instructsObject = recipes[sender.tag].instructions 
-                
-                
-                
-                
-                
-                if let ingsObjectData = NSKeyedArchiver.archivedData(withRootObject: ingsObject) as? NSData,
-                    let instructsObjectData = NSKeyedArchiver.archivedData(withRootObject: instructsObject) as? NSData {
-                    
-                    savingRecipe.recipeIngredients = ingsObjectData
-                    savingRecipe.recipeInstructions = instructsObjectData
-                }
-                
-                
-                
+                //let instructsObject = recipes[sender.tag].instructions
                 
                 if(DatabaseController.saveContext() == true) {
                     alertString = "Added \(title) to your list!"
