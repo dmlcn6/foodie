@@ -60,12 +60,12 @@ class SpoonApi: NSObject {
     }
     
     // MARK: - API Requests
-    func getAdvancedRecipeData(recipeId: Int, completionHandler: @escaping (Data?, String?) -> Void) {
+    func getAdvancedRecipeData(recipeId: Double, completionHandler: @escaping (Data?, String?) -> Void) {
         
         //paramName=param&paramName=param
         let params = "includeNutrition=false"
         
-        let informationURI = "recipes/\(recipeId)/information?"
+        let informationURI = "recipes/\(Int(recipeId))/information?"
         
         let fullURLstring:String = "\(baseURL)\(informationURI)\(params)"
         

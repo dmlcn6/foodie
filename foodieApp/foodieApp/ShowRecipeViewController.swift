@@ -18,7 +18,7 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var recipeServingsLabel: UILabel!
     
     // MARK: - Class Members
-    var selectedRecipe: Recipe?
+    var selectedRecipe: FoodieRecipe?
     var selectedSegment: Int = 0
 
     // MARK: - ViewController
@@ -43,18 +43,19 @@ class ShowRecipeViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     //converts parsed time into human readable time: 99h 59min
-    func convertTime(time: Int) -> String{
+    func convertTime(time: Double) -> String{
         var remainingTime = 0
         var hours = 0
+        let recipeTime = Int(time)
         
         if (time > 120){
-            remainingTime = time - 120
+            remainingTime = recipeTime - 120
             hours = 2
         }else if (time > 60){
-            remainingTime = time - 60
+            remainingTime = recipeTime - 60
             hours = 1
         }else{
-            remainingTime = time
+            remainingTime = recipeTime
         }
         
         if (hours == 0){
