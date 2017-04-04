@@ -27,6 +27,7 @@ class ShoppingListViewController: UITableViewController {
     
     var displayedRows: [CollapsableShoppingList] = []
     var recipeList: [Recipe] = []
+    @IBOutlet var shoppingListTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,7 +85,7 @@ class ShoppingListViewController: UITableViewController {
         } catch {
             print("Fetching Failed")
         }
-        tableView.reloadData()
+        shoppingListTableView.reloadData()
     }
     
     func fetchRequest() -> NSFetchRequest<Recipe> {
@@ -108,14 +109,13 @@ class ShoppingListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "recipeIngCell", for: indexPath) as! ShoppingListTableViewCell
-
+        
         let viewCell = displayedRows[indexPath.row]
         // Configure the cell...
         if (cell.infoLabel.text != nil) {
             cell.infoLabel.text = viewCell.label
         }
         
-
         return cell
     }
     
@@ -129,15 +129,15 @@ class ShoppingListViewController: UITableViewController {
             
             let indexPaths = range.map{return NSIndexPath.init(row: $0, section: indexPath.section)} as [IndexPath]
             
-            tableView.beginUpdates()
+            shoppingListTableView.beginUpdates()
             if viewModel.isCollapsed {
                 displayedRows.insert(contentsOf: viewModel.children, at: indexPath.row+1)
-                tableView.insertRows(at: indexPaths as [IndexPath], with: .automatic)
+                shoppingListTableView.insertRows(at: indexPaths as [IndexPath], with: .automatic)
             } else {
                 displayedRows.removeSubrange(range)
-                tableView.deleteRows(at: indexPaths, with: .automatic)
+                shoppingListTableView.deleteRows(at: indexPaths, with: .automatic)
             }
-            tableView.endUpdates()
+            shoppingListTableView.endUpdates()
         }
         viewModel.isCollapsed = !viewModel.isCollapsed
     }
@@ -181,13 +181,13 @@ class ShoppingListViewController: UITableViewController {
                     print("Unresolved error \(nserror), \(nserror.userInfo)")
                 }
                 
-                tableView.beginUpdates()
+                shoppingListTableView.beginUpdates()
                 
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                shoppingListTableView.deleteRows(at: [indexPath], with: .fade)
                 displayedRows.remove(at: indexPath.row)
                 
-                tableView.endUpdates()
-                tableView.reloadData()
+                shoppingListTableView.endUpdates()
+                shoppingListTableView.reloadData()
             }
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view

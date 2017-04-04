@@ -11,6 +11,7 @@ import CoreData
 
 class DatabaseController{
     
+    let databaseController = DatabaseController();
     
     static var persistentContainer: NSPersistentContainer = {
         /*
@@ -40,22 +41,13 @@ class DatabaseController{
     }()
     
     
-    // MARK: - Private Initializer
-    
-    private init(){
-        
-    }
-    
-    
     // MARK: - Core Data Context getter
-    
     class func getContext() -> NSManagedObjectContext{
         return self.persistentContainer.viewContext
     }
     
     
     // MARK: - Core Data Saving support
-    
     class func saveContext() -> Bool {
         let context = persistentContainer.viewContext
         
