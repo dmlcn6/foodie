@@ -31,6 +31,56 @@ class GenerateMealsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - TableView Config
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        var rowCount = 0
+        
+        if meals.count > 0{
+            rowCount = meals.count
+        }else if(mealErrors.count > 0){
+            rowCount = mealErrors.count
+            
+        }
+        return rowCount
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //loads only once\
+        //let selectedRecipeId = meals[indexPath.row].recipeId
+        
+    }
+    
+    // Configure the cell \\
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        //get resuable cell name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "mealPlan", for: indexPath) as! MealTableViewCell
+        
+        if (meals.count > 0) {
+            cell.isUserInteractionEnabled = true
+            
+            //set recipeImageView
+            cell.mealImageView.image = meals[indexPath.row].recipeImage
+            
+            //set recipeLabel
+            cell.mealLable.text = meals[indexPath.row].recipeName
+            
+        }else if (mealErrors.count > 0){
+            cell.mealLable.text = mealErrors[indexPath.row]
+            
+            cell.mealImageView.image = UIImage()
+            
+            cell.isUserInteractionEnabled = false
+        }
+        return cell
+    }
+    
     @IBAction func generateMealPlan(_ sender: Any) {
         meals.removeAll()
         mealErrors.removeAll()
@@ -80,8 +130,56 @@ class GenerateMealsViewController: UIViewController {
         }
     }
     
-    func parseMealPlanJson(data: Data) {
-        
+    func parseMealPlanJson(data: Data){
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
+            
+            
+            /*
+             if let results = root["results"] as? [String:Any] {
+             print("PARSEJSON \(results)\n\n\n")
+             }
+             */
+            
+            //var resultsArray = json["results"] as? [String:Any]
+            
+            for (key, value) in json{
+                //print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                if (key == "results"){
+                    if let resultsArray = value as? [[String:Any]] {
+                        //print("\n\nRESULTSARRAY\(resultsArray)\n\n")
+                        
+                        for result in resultsArray {
+                            //print("\n\nRESULTSPART\(result)\n\n")
+                            
+                            if let recipeTitle = result["title"] as? String,
+                                let recipeId = result["id"] as? Double,
+                                let recipeTime = result["readyInMinutes"] as? Double {
+                                
+                                
+                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(recipeId))-480x360.jpg"
+                                
+                                //let baseImageUrl = "https://spoonacular.com/recipeImages/\(imageString)"
+                                
+                                if let recipeImageUrl = URL(string: baseImageUrl),
+                                    let imageData = try? Data(contentsOf: recipeImageUrl) {
+                                    
+                                    let image = UIImage(data: imageData)
+                                    
+                                    if let recipeImage = image{
+                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
+                                        meals.append(newRecipe)
+                                    }else {
+                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: UIImage(), time: recipeTime, servings: 0)
+                                        meals.append(newRecipe)
+                                    }
+                                }
+                            }
+                            //print("\n\nTTITLE::\(result["title"])\n\n")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /*
