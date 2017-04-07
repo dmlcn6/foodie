@@ -98,7 +98,12 @@ class SpoonApi: NSObject {
         task.resume()
     }
     
-    func getExplorePageData(urlParams:String, completionHandler: @escaping (Data?, String?) -> Void) {
+    //gonna try this w a sephamore
+    func getHomePageData(timeOfDay: String){
+        
+    }
+    
+    func getExplorePageData(queryString: String, completionHandler: @escaping (Data?, String?) -> Void) {
         /*
          diet - pescetarian, lacto vegetarian, ovo vegetarian, vegan, and vegetarian
          excludeIngredients - comma-separated list of ingredients
@@ -115,9 +120,48 @@ class SpoonApi: NSObject {
         let recipeURI = "recipes/search?"
         
         //paramName=param&paramName=param
-        let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course"
+        //let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=1&offset=0&query=burger&type=main+course"
         
-        let fullURLstring:String = "\(baseURL)\(recipeURI)\(params)"
+        let fullURLstring:String = "\(baseURL)\(recipeURI)\(queryString)"
+        
+        // Request Headers for GET \\
+        let headers = [
+            "cache-control": "no-cache",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "x-mashape-key": getAuthKey()
+        ]
+        
+        let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers)
+        
+        // Load configuration into Session \\
+        let session = URLSession(configuration: config)
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            if error != nil {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(nil, error!.localizedDescription)
+                })
+            } else {
+                DispatchQueue.main.sync(execute: {
+                    completionHandler(data, nil)
+                })
+            }
+        }
+        task.resume()
+    }
+    
+    func getMealPlanData(queryString: String, completionHandler: @escaping(Data?, String?) -> Void){
+    
+        //base recipe URL
+        let mealPlanURI = "recipes/mealplans/generate?"
+        
+        //paramName=param&paramName=param
+        //let params = "diet=vegetarian&excludeIngredients=coconut&targetCalories=2000&timeFrame=week"
+        
+        let fullURLstring:String = "\(baseURL)\(mealPlanURI)\(queryString)"
         
         // Request Headers for GET \\
         let headers = [
