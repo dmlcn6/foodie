@@ -47,7 +47,7 @@ class SpoonApi: NSObject {
     
     // MARK: - Global URL Config
     func configureURLRequest(httpUrl: String, httpAction: String, httpHeaders: [String:String]) -> URLRequest? {
-        let url = URL(string: "")
+        
         
         // Make sure url is valid \\
         if let url = URL(string: httpUrl) {
@@ -101,16 +101,7 @@ class SpoonApi: NSObject {
             }
             task.resume()
         }else {
-            let alert = UIAlertController(title: "Error", message: "We're so sorry, something went wrong.", preferredStyle: .alert)
-            
-            // set the confirm action
-            let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            
-            // add confirm button to alert
-            alert.addAction(confirmAction)
-            
-            
-            self.present(alert, animated: true, completion: nil)
+            return
         }
     }
     
@@ -148,31 +139,34 @@ class SpoonApi: NSObject {
             "x-mashape-key": getAuthKey()
         ]
         
-        let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers)
-        
-        // Load configuration into Session \\
-        let session = URLSession(configuration: config)
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) in
+        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers){
             
-            if error != nil {
-                DispatchQueue.main.sync(execute: {
-                    completionHandler(nil, error!.localizedDescription)
-                })
-            } else {
-                DispatchQueue.main.sync(execute: {
-                    completionHandler(data, nil)
-                })
+            // Load configuration into Session \\
+            let session = URLSession(configuration: config)
+            
+            let task = session.dataTask(with: urlRequest) {
+                (data, response, error) in
+                
+                if error != nil {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(nil, error!.localizedDescription)
+                    })
+                } else {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(data, nil)
+                    })
+                }
             }
+            task.resume()
+        }else {
+            return
         }
-        task.resume()
     }
     
     func getMealPlanData(queryString: String, completionHandler: @escaping(Data?, String?) -> Void){
     
         //base recipe URL
-        let mealPlanURI = "recipes/mealplans/generate?"
+        let mealPlanURI = "recipes/mealplans/generate"
         
         //paramName=param&paramName=param
         //let params = "diet=vegetarian&excludeIngredients=coconut&targetCalories=2000&timeFrame=week"
@@ -187,25 +181,28 @@ class SpoonApi: NSObject {
             "x-mashape-key": getAuthKey()
         ]
         
-        let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers)
-        
-        // Load configuration into Session \\
-        let session = URLSession(configuration: config)
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) in
+        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers) {
             
-            if error != nil {
-                DispatchQueue.main.sync(execute: {
-                    completionHandler(nil, error!.localizedDescription)
-                })
-            } else {
-                DispatchQueue.main.sync(execute: {
-                    completionHandler(data, nil)
-                })
+            // Load configuration into Session \\
+            let session = URLSession(configuration: config)
+            
+            let task = session.dataTask(with: urlRequest) {
+                (data, response, error) in
+                
+                if error != nil {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(nil, error!.localizedDescription)
+                    })
+                } else {
+                    DispatchQueue.main.sync(execute: {
+                        completionHandler(data, nil)
+                    })
+                }
             }
+            task.resume()
+        }else {
+            return
         }
-        task.resume()
     }
     
     // MARK: - Auth Key

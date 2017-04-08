@@ -85,36 +85,62 @@ class GenerateMealsViewController: UIViewController {
         meals.removeAll()
         mealErrors.removeAll()
         
-        var diet = ""
-        var exclude = ""
-        var calories = ""
+        var queryString = "?"
         
         if let dietText = dietInput.text {
-            diet = dietText
+            if !(dietText.isEmpty){
+                queryString += "diet=\(dietText)"
+            }
+            
         }
         if let excludeText = excludedInput.text{
-            if (excludeText.contains(",")){
-                let excludeIngs = excludeText.components(separatedBy: ",")
-                
-                for ing in excludeIngs{
-                    if (ing == excludeIngs.last){
-                        exclude += ing
-                    }else{
-                        exclude += ing + "%2C+"
-                    }
+            if !(excludeText.isEmpty){
+                if (queryString == "?"){
+                    queryString += "exclude="
+                }else {
+                    queryString += "&exclude="
                 }
-            }else if(excludeText.isEmpty){
-                exclude = ""
-            }
-            else{
-                exclude = excludeText
+                if (excludeText.contains(",")){
+                    let excludeIngs = excludeText.components(separatedBy: ",")
+                    
+                    for ing in excludeIngs{
+                        
+                        let parsedIngs = ing.components(separatedBy: " ")
+                        for eachIng in parsedIngs{
+                            if (ing == excludeIngs.last){
+                                queryString += eachIng
+                            }else{
+                                if(eachIng != ""){
+                                    queryString += eachIng + "%2C"
+                                }
+                            }
+                        }
+                        
+                    }
+                }else{
+                    queryString += excludeText
+                }
             }
         }
         if let calorieText = caloriesInput.text{
-            calories = calorieText
+            if !(calorieText.isEmpty){
+                if let calories = Int(calorieText){
+                    if (queryString == "?"){
+                        queryString += "targetCalories=\(calories)"
+                    }else {
+                        queryString += "&targetCalories=\(calories)"
+                    }
+                }
+            }
         }
         
-        let queryString = "diet=\(diet)&exclude=\(exclude)&targetCalories=\(calories)&timeFrame=week)"
+        if (queryString == "?"){
+            queryString += "timeFrame=week"
+        }else {
+            queryString += "&timeFrame=week"
+        }
+        
+        //var queryString = "diet=\(diet)&exclude=\(exclude)&targetCalories=\(calories)&timeFrame=week"
         
         //loads only once\\
         spoonApiAccess.getMealPlanData(queryString: queryString){
@@ -133,7 +159,11 @@ class GenerateMealsViewController: UIViewController {
     func parseMealPlanJson(data: Data){
         if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
             
+            //save recipe to local context for offline usage
+            //let context = DatabaseController.getContext()
+            
             print("PARSEJSON \(json)\n\n\n")
+            
             /*
              if let results = root["results"] as? [String:Any] {
              print("PARSEJSON \(results)\n\n\n")
@@ -163,29 +193,64 @@ class GenerateMealsViewController: UIViewController {
                         
                         for result in resultsArray {
                             //print("\n\nRESULTSPART\(result)\n\n")
-                            
-                            if let value = result["value"] as? [String:Any]{
-                                print("\n\nVALUE: \(value)\n\n")
+                            for (key, value) in result{
                                 
-                                //let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(recipeId))-480x360.jpg"
-                                
-                                /*
-                                
-                                if let recipeImageUrl = URL(string: baseImageUrl),
-                                    let imageData = try? Data(contentsOf: recipeImageUrl) {
+                                //print("\n\nVALUE: \(value)\n\n")
+                                if (key == "day"){
                                     
-                                    let image = UIImage(data: imageData)
+                                }
+                                if (key == "slot"){
                                     
-                                    if let recipeImage = image{
-                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: recipeImage, time: recipeTime, servings: 0)
-                                        meals.append(newRecipe)
-                                    }else {
-                                        let newRecipe:FoodieRecipe = FoodieRecipe(name: recipeTitle, id: recipeId, image: UIImage(), time: recipeTime, servings: 0)
-                                        meals.append(newRecipe)
+                                }
+                                if let value = value as? String, key == "value" {
+                                    if let dataValue = value.data(using: .utf8){
+                                        if let mealObject = try? JSONSerialization.jsonObject(with: dataValue, options: []) as! [String:Any]{
+                                            
+                                            let savingRecipe: FoodieRecipe = FoodieRecipe(name: "", id: 0, image: UIImage(), time: 0, servings: 0)
+
+                                            for (key,value) in mealObject{
+                                                
+                                                print("\n\nK:\(key) V: \(value)\n\n")
+                                                
+                                                if (key == "id"){
+                                                    if let value = value as? Double{
+                                                        
+                                                        savingRecipe.recipeId = value
+                                                        
+                                                        
+                                                    }
+                                                }
+                                                if let imgType = value as? String, key == "imageType" {
+                                                
+                                                    let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(savingRecipe.recipeId))-480x360.\(imgType)"
+                                                    
+                                                    
+                                                    if let recipeImageUrl = URL(string: baseImageUrl),
+                                                        let imageData = try? Data(contentsOf: recipeImageUrl) {
+                                                        
+                                                        let image = UIImage(data: imageData)
+                                                        
+                                                        
+                                                        savingRecipe.recipeImage = image
+                                                        
+                                                    }else {
+                                                        savingRecipe.recipeImage = UIImage()
+                                                    }
+                                                }
+                                                if (key == "title"){
+                                                    if let name = value as? String{
+                                                        savingRecipe.recipeName = name
+                                                    }
+                                                }
+                                            }
+                                            
+                                            savingRecipe.recipeServings = 0
+                                            savingRecipe.recipeTime = 0
+                                            
+                                            meals.append(savingRecipe)
+                                        }
                                     }
                                 }
-                                */
-                                
                             }
                         }
                     }

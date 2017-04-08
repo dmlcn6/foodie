@@ -18,6 +18,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     var recipes = [FoodieRecipe]()
     var recipeErrors = [String]()
     var searchBar = UISearchBar()
+    var indicator = UIActivityIndicatorView()
     @IBOutlet weak var mealSelection: UISegmentedControl!
     @IBOutlet weak var dietInput: UITextField!
     @IBOutlet weak var excludedInput: UITextField!
@@ -106,22 +107,22 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         recipeTableView.reloadData()
         
         var mealType = ""
-        if (self.mealSelection.selectedSegmentIndex.description != "-1"){
-            switch( self.mealSelection.selectedSegmentIndex){
-            case 0:
-                mealType = "breakfast"
-            case 1:
-                mealType = "lunch"
-            case 2:
-                mealType = "main+course"
-            case 3:
-                mealType = "appetizer"
-            case 4:
-                mealType = "dessert"
-            default:
-                mealType = ""
-            }
+        
+        switch(self.mealSelection.selectedSegmentIndex){
+        case 0:
+            mealType = "breakfast"
+        case 1:
+            mealType = "lunch"
+        case 2:
+            mealType = "main+course"
+        case 3:
+            mealType = "appetizer"
+        case 4:
+            mealType = "dessert"
+        default:
+            mealType = ""
         }
+        
         
         var diet = ""
         var exclude = ""
@@ -150,6 +151,9 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         if let query = searchBar.text {
             let queryString = "diet=\(diet)&excludeIngredients=\(exclude)&instructionsRequired=true&intolerances=\(exclude)&number=1&offset=0&query=\(query)&type=\(mealType)"
         
+            
+            indicator.startAnimating()
+            indicator.backgroundColor = UIColor.red
         
             //loads only once\\
             spoonApiAccess.getExplorePageData(queryString: queryString){
@@ -159,14 +163,27 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                     self.parseExploreJson(data: data)
                     self.searchBar.endEditing(true)
                     self.recipeTableView.reloadData()
+                    
+                    self.indicator.stopAnimating()
+                    self.indicator.hidesWhenStopped = true
                 }else if let error = error{
                     self.recipeErrors.append(error.description)
                     self.searchBar.endEditing(true)
                     self.recipeTableView.reloadData()
-                    //self.navigationItem.titleView = searchBar
+                    
+                    self.indicator.stopAnimating()
+                    self.indicator.hidesWhenStopped = true
                 }
             }
         }
+    }
+    
+    func activityIndicator() {
+        let frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        indicator = UIActivityIndicatorView(frame: frame)
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
     }
     
     // MARK: - Keyboard Dismissal
