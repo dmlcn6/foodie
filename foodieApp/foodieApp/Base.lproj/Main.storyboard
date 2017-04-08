@@ -365,9 +365,8 @@
                     <connections>
                         <outlet property="caloriesInput" destination="Xcf-eS-IWz" id="90R-2Y-Ey5"/>
                         <outlet property="dietInput" destination="b9B-bj-spD" id="9ds-gW-xmd"/>
-                        <outlet property="excludeInput" destination="tn6-Ka-bI9" id="HBY-oR-qdq"/>
+                        <outlet property="excludedInput" destination="tn6-Ka-bI9" id="ZX9-il-10B"/>
                         <outlet property="mealsTableView" destination="MVf-Xj-cSw" id="jNZ-V0-j1E"/>
-                        <segue destination="aZ9-Cm-3BC" kind="show" id="kXi-JO-4o8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l8T-Im-35U" userLabel="First Responder" sceneMemberID="firstResponder"/>

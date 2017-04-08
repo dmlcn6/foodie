@@ -11,7 +11,7 @@ import CoreData
 
 class DatabaseController{
     
-    let databaseController = DatabaseController();
+    //let databaseController = DatabaseController();
     
     static var persistentContainer: NSPersistentContainer = {
         /*

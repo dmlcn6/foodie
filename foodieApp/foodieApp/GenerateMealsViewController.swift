@@ -133,7 +133,7 @@ class GenerateMealsViewController: UIViewController {
     func parseMealPlanJson(data: Data){
         if let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]{
             
-            
+            print("PARSEJSON \(json)\n\n\n")
             /*
              if let results = root["results"] as? [String:Any] {
              print("PARSEJSON \(results)\n\n\n")
@@ -143,22 +143,33 @@ class GenerateMealsViewController: UIViewController {
             //var resultsArray = json["results"] as? [String:Any]
             
             for (key, value) in json{
-                //print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
-                if (key == "results"){
+                print("KEY::\(key) \n\n RESULTS::\(value)\n\n\n")
+                if(key == "status"){
+                    if let httpStatus = value as? Int, httpStatus == 404 {
+                        let alert = UIAlertController(title: "Error", message: "We're so sorry, something went wrong.", preferredStyle: .alert)
+                        
+                        // set the confirm action
+                        let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        
+                        // add confirm button to alert
+                        alert.addAction(confirmAction)
+                        
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+                if (key == "items"){
                     if let resultsArray = value as? [[String:Any]] {
                         //print("\n\nRESULTSARRAY\(resultsArray)\n\n")
                         
                         for result in resultsArray {
                             //print("\n\nRESULTSPART\(result)\n\n")
                             
-                            if let recipeTitle = result["title"] as? String,
-                                let recipeId = result["id"] as? Double,
-                                let recipeTime = result["readyInMinutes"] as? Double {
+                            if let value = result["value"] as? [String:Any]{
+                                print("\n\nVALUE: \(value)\n\n")
                                 
+                                //let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(recipeId))-480x360.jpg"
                                 
-                                let baseImageUrl = "https://spoonacular.com/recipeImages/\(Int(recipeId))-480x360.jpg"
-                                
-                                //let baseImageUrl = "https://spoonacular.com/recipeImages/\(imageString)"
+                                /*
                                 
                                 if let recipeImageUrl = URL(string: baseImageUrl),
                                     let imageData = try? Data(contentsOf: recipeImageUrl) {
@@ -173,8 +184,9 @@ class GenerateMealsViewController: UIViewController {
                                         meals.append(newRecipe)
                                     }
                                 }
+                                */
+                                
                             }
-                            //print("\n\nTTITLE::\(result["title"])\n\n")
                         }
                     }
                 }
