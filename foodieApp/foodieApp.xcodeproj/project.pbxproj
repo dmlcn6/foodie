@@ -25,6 +25,9 @@
 		E0B1548B1E63AECE000CE4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154891E63AECE000CE4C2 /* Main.storyboard */; };
 		E0B154901E63AECE000CE4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */; };
 		E0B154931E63AECE000CE4C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154911E63AECE000CE4C2 /* LaunchScreen.storyboard */; };
+		E0F0565A1E9A63A40074186A /* MealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */; };
+		E0F0565C1E9A719A0074186A /* MealHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */; };
+		E0F0565E1E9B1BF80074186A /* ActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0B154921E63AECE000CE4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0B154941E63AECE000CE4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealCollectionViewCell.swift; sourceTree = "<group>"; };
+		E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealHeaderReusableView.swift; sourceTree = "<group>"; };
+		E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +84,7 @@
 				E0804DBF1E998CFD00DD1473 /* MealPlanViewController.swift */,
 				E0804DC01E998CFD00DD1473 /* ShoppingListViewController.swift */,
 				E0804DC11E998CFD00DD1473 /* ShowRecipeViewController.swift */,
+				E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -97,6 +104,8 @@
 				E0804DCE1E998D3300DD1473 /* MealTableViewCell.swift */,
 				E0804DCF1E998D3300DD1473 /* RecipeInfoTableViewCell.swift */,
 				E0804DD01E998D3300DD1473 /* ShoppingListTableViewCell.swift */,
+				E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */,
+				E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */,
 			);
 			path = ViewCells;
 			sourceTree = "<group>";
@@ -136,8 +145,8 @@
 				E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */,
 				E0804DD71E998E4000DD1473 /* Models */,
 				E0804DC81E998D3300DD1473 /* DataAccess */,
-				E0804DCC1E998D3300DD1473 /* ViewCells */,
 				E0804DBB1E998CFD00DD1473 /* Controllers */,
+				E0804DCC1E998D3300DD1473 /* ViewCells */,
 				E029DD4F1E69E3F9006449B7 /* Support */,
 			);
 			path = foodieApp;
@@ -221,13 +230,16 @@
 				E0804DD11E998D3300DD1473 /* SpoonApi.swift in Sources */,
 				E0804DC71E998CFD00DD1473 /* ShowRecipeViewController.swift in Sources */,
 				E0B154861E63AECE000CE4C2 /* AppDelegate.swift in Sources */,
+				E0F0565A1E9A63A40074186A /* MealCollectionViewCell.swift in Sources */,
 				E0804DD31E998D3300DD1473 /* ExploreRecipeTableViewCell.swift in Sources */,
 				E0804DC31E998CFD00DD1473 /* ExploreRecipeViewController.swift in Sources */,
+				E0F0565E1E9B1BF80074186A /* ActivityIndicatorController.swift in Sources */,
 				E0804DD51E998D3300DD1473 /* RecipeInfoTableViewCell.swift in Sources */,
 				E0804DD61E998D3300DD1473 /* ShoppingListTableViewCell.swift in Sources */,
 				E0804DC61E998CFD00DD1473 /* ShoppingListViewController.swift in Sources */,
 				E0804DC21E998CFD00DD1473 /* DatabaseController.swift in Sources */,
 				E0804DD91E998E4000DD1473 /* FoodieRecipe.swift in Sources */,
+				E0F0565C1E9A719A0074186A /* MealHeaderReusableView.swift in Sources */,
 				E0804DC51E998CFD00DD1473 /* MealPlanViewController.swift in Sources */,
 				E0804DC41E998CFD00DD1473 /* GenerateMealsViewController.swift in Sources */,
 			);
