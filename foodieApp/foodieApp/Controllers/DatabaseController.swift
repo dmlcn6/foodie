@@ -3,7 +3,7 @@
 //  foodieApp
 //
 //  Created by Mr. Lopez on 3/12/17.
-//  Copyright © 2017 DLopezPrograms. All rights reserved.
+//  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
 
 import Foundation
