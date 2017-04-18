@@ -88,7 +88,33 @@ class SpoonApi: NSObject {
             
             let task = session.dataTask(with: urlRequest) {
                 (data, response, error) in
-                
+                if let urlResp = response{
+                    print(urlResp)
+                    
+                    let respParse = urlResp.description.components(separatedBy: ["{","}"])
+                        
+                    if(respParse.count > 0){
+                        var count = 0
+                        let heads = respParse[4].components(separatedBy: [";","="])
+                        
+                        for header in heads {
+                            
+                            if(header.contains("X-RateLimit-requests-Remaining")){
+                                print("\n\nHeader\(header)")
+                                
+                                let remaining = heads[count+1].components(separatedBy: ["\""," "])
+                                if let remainReqs = Int(remaining[1]){
+                                    print("REMAINING REQS == \(remainReqs)")
+                                }
+                            }
+                            count += 1
+                        }
+                            
+                        
+                    }else{
+                        print("\n\nRESPONSE WAS NULL!\n\n")
+                    }
+                }
                 if error != nil {
                     DispatchQueue.main.sync(execute: {
                         completionHandler(nil, error!.localizedDescription)
@@ -124,7 +150,7 @@ class SpoonApi: NSObject {
         */
         
         //base recipe URL
-        let recipeURI = "recipes/search?"
+        let recipeURI = "recipes/search"
         
         //paramName=param&paramName=param
         //let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&limitLicense=false&number=1&offset=0&query=burger&type=main+course"
