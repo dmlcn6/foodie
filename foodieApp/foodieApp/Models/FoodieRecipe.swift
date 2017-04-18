@@ -17,6 +17,7 @@ class FoodieRecipe: NSObject{
     var recipeImage:UIImage?
     var recipeTime: Double
     var recipeServings: Double
+    var foodHour: Int?
     
     
     
