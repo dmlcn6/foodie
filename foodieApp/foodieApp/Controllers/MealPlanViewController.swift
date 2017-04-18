@@ -12,6 +12,8 @@ class MealPlanViewController: UIViewController, UITableViewDataSource, UITableVi
 
     @IBOutlet weak var mealsTableView: UITableView!
     
+    let indicator = ActivityIndicatorController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
