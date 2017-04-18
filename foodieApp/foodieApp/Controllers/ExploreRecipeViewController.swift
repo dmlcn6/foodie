@@ -14,11 +14,13 @@ import CoreData
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     // MARK: - Class Members
+    let indicator = ActivityIndicatorController()
+    var foodHour = DateComponents()
     var objects = [String]()
     var recipes = [FoodieRecipe]()
     var recipeErrors = [String]()
+    var recipeCurations = [String]()
     var searchBar = UISearchBar()
-    var indicator = UIActivityIndicatorView()
     @IBOutlet weak var mealSelection: UISegmentedControl!
     @IBOutlet weak var dietInput: UITextField!
     @IBOutlet weak var excludedInput: UITextField!
@@ -35,20 +37,6 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         // Do any additional setup after loading the view.
         objects = ["recipe1","recipe2","Recipe3","recipe4","recipe5","Recipe6"]
         
-        //loads only once\\
-        /*
-        spoonApiAccess.getRandomHomePageData(urlParams: ""){
-            (data,error) in
-            
-            if let data = data {
-                self.parseHomePageJson(data: data)
-                self.recipeTableView.reloadData()
-            }else{
-                //internet could be down
-                // or some other problem
-            }
-        }
-        */
         
     }
     
@@ -63,25 +51,33 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         let hour = Calendar.current.component(.hour, from: now)
         
         //if morning
-        if (hour < 12){
+        if (hour > 3 && hour < 12){
             //curate some lists of breakfasts
             //some vegan bkfasts
             //some very quick bkfasts
             //some smoothies
             
-            print("hello morning")
-        }else if(hour >= 12 && hour < 17){
+            
+            recipeCurations = ["Smoothies for Sunrises!",""]
+            
+            print("hello morning\(hour)")
+        }else if(hour >= 12 && hour < 18){
             //curate some lists of LUNCHES
             //some vegan snacks w veggies
-            //some very quick lunches
+            //some healthy lunches
             //some high protein smoothies
-            print("hello afternoon")
+            
+            recipeCurations = ["","Delicious Snacks To Keep You Going!",""]
+            
+            print("hello afternoon\(hour)")
         }else {
             //curate some lists of dinners
             //some vegan dinners
             //some very quick dinners
             //some high protein smoothies
-            print("hello EVENING")
+            
+            recipeCurations = ["Recovery Smoothies","Main Courses of the Week","30 Mouth Watering Vegan Dinners"]
+            print("hello NightTime\(hour)")
         }
 
     }
@@ -106,85 +102,128 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         recipeErrors.removeAll()
         recipeTableView.reloadData()
         
-        var mealType = ""
+        var queryString = "?instructionsRequired=true"
+        var query = ""
+        
+        if let dietText = dietInput.text {
+            if !(dietText.isEmpty){
+                queryString += "&diet=\(dietText)"
+            }
+        }
         
         switch(self.mealSelection.selectedSegmentIndex){
         case 0:
-            mealType = "breakfast"
+            queryString += "&type=breakfast"
         case 1:
-            mealType = "lunch"
+            queryString += "&type=lunch"
         case 2:
-            mealType = "main+course"
+            queryString += "&type=main+course"
         case 3:
-            mealType = "appetizer"
+            queryString += "&type=snack"
         case 4:
-            mealType = "dessert"
+            queryString += "&type=dessert"
         default:
-            mealType = ""
+            break
         }
         
-        
-        var diet = ""
-        var exclude = ""
-        
-        if let dietText = dietInput.text {
-            diet = dietText
-        }
         if let excludeText = excludedInput.text{
-            if (excludeText.contains(",")){
-                let excludeIngs = excludeText.components(separatedBy: ",")
+            if !(excludeText.isEmpty){
+                queryString += "&exclude="
                 
-                for ing in excludeIngs{
-                    if (ing == excludeIngs.last){
-                        exclude += ing
-                    }else{
-                        exclude += ing + "%2C+"
+                if (excludeText.contains(",")){
+                    let excludeIngs = excludeText.components(separatedBy: ",")
+                    
+                    for ing in excludeIngs{
+                        
+                        let parsedIngs = ing.components(separatedBy: " ")
+                        for eachIng in parsedIngs{
+                            if (ing == excludeIngs.last){
+                                queryString += eachIng
+                            }else{
+                                if(eachIng != ""){
+                                    queryString += eachIng + "%2C"
+                                }
+                            }
+                        }
+                        
+                    }
+                }else{
+                    queryString += excludeText
+                }
+            }
+        }
+        
+        if let search = searchBar.text {
+            var validSearch = true
+            if (search.contains(" ") ){
+                let badSearch = search.trimmingCharacters(in: .whitespaces)
+                if (badSearch.characters.count < 1) {
+                    //alert you must enter text
+                    let alertCont: UIAlertController = UIAlertController(title: "Uh Oh!", message: "Please enter a search string.", preferredStyle: .alert)
+                    
+                    // set the confirm action
+                    let confirmAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    
+                    // add confirm button to alert
+                    alertCont.addAction(confirmAction)
+                    validSearch = false
+                    self.present(alertCont, animated: true, completion: nil)
+                }else {
+                
+                    let parsedQuery = search.components(separatedBy: " ")
+                    
+                    for word in parsedQuery{
+                        
+                        let parsedWords = word.components(separatedBy: " ")
+                        for eachWord in parsedWords{
+                            if (eachWord == parsedQuery.last){
+                                query += eachWord
+                            }else{
+                                if(eachWord != ""){
+                                    query += eachWord + "+"
+                                }
+                            }
+                        }
+                        
                     }
                 }
-            }else if(excludeText.isEmpty){
-                exclude = ""
+            }else {
+                query += search
             }
-            else{
-                exclude = excludeText
-            }
-        }
-        if let query = searchBar.text {
-            let queryString = "diet=\(diet)&excludeIngredients=\(exclude)&instructionsRequired=true&intolerances=\(exclude)&number=1&offset=0&query=\(query)&type=\(mealType)"
-        
             
-            indicator.startAnimating()
-            indicator.backgroundColor = UIColor.red
-        
-            //loads only once\\
-            spoonApiAccess.getExplorePageData(queryString: queryString){
-                (data,error) in
+            if (validSearch){
+                queryString += "&number=1&offset=0&query=\(query)"
                 
-                if let data = data {
-                    self.parseExploreJson(data: data)
-                    self.searchBar.endEditing(true)
-                    self.recipeTableView.reloadData()
+                indicator.setup(parentView: self.view)
+                indicator.start()
+                
+                
+                //loads only once\\
+                spoonApiAccess.getExplorePageData(queryString: queryString){
+                    (data,error) in
                     
-                    self.indicator.stopAnimating()
-                    self.indicator.hidesWhenStopped = true
-                }else if let error = error{
-                    self.recipeErrors.append(error.description)
-                    self.searchBar.endEditing(true)
-                    self.recipeTableView.reloadData()
+                    if let data = data {
+                        self.parseExploreJson(data: data)
+                        self.searchBar.endEditing(true)
+                        self.recipeTableView.reloadData()
+                        
+                        self.indicator.stop()
+                    }else if let error = error{
+                        self.recipeErrors.append(error.description)
+                        self.searchBar.endEditing(true)
+                        self.recipeTableView.reloadData()
+                        
+                        self.indicator.stop()
+                    }
                     
-                    self.indicator.stopAnimating()
-                    self.indicator.hidesWhenStopped = true
+                    //reset field values
+                    self.mealSelection.selectedSegmentIndex = -1
+                    searchBar.text = ""
                 }
             }
         }
     }
     
-    func activityIndicator() {
-        let frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        indicator = UIActivityIndicatorView(frame: frame)
-        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        indicator.center = self.view.center
-        self.view.addSubview(indicator)
-    }
     
     // MARK: - Keyboard Dismissal
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -207,26 +246,59 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             rowCount = recipes.count
         }else if(recipeErrors.count > 0){
             rowCount = recipeErrors.count
-            
+        }else{
+            rowCount = recipeCurations.count
         }
         return rowCount
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //loads only once\
-        let selectedRecipeId = recipes[indexPath.row].recipeId
+        indicator.setup(parentView: self.view)
+        indicator.start()
         
-        spoonApiAccess.getAdvancedRecipeData(recipeId: selectedRecipeId){
-            (data,error) in
+        if (recipes.count > 0){
             
-            if let data = data {
-                self.parseAdvancedRecipeJson(data: data)
+            let selectedRecipeId = recipes[indexPath.row].recipeId
+            
+            spoonApiAccess.getAdvancedRecipeData(recipeId: selectedRecipeId){
+                (data,error) in
                 
-                self.performSegue(withIdentifier: "showRecipe", sender: self)
-            }else if let error = error {
-                self.recipeErrors.append(error.description)
-                self.recipeTableView.reloadData()
+                if let data = data {
+                    self.parseAdvancedRecipeJson(data: data)
+                    
+                    self.indicator.stop()
+                    self.performSegue(withIdentifier: "showRecipe", sender: self)
+                    
+                }else if let error = error {
+                    self.recipeErrors.append(error.description)
+                    self.recipeTableView.reloadData()
+                    self.indicator.stop()
+                }
             }
+        }else {
+            /*
+            var queryString = ""
+            //loads only once\\
+            spoonApiAccess.getExplorePageData(queryString: queryString){
+                (data,error) in
+                
+                if let data = data {
+                    self.parseExploreJson(data: data)
+                    self.searchBar.endEditing(true)
+                    self.recipeTableView.reloadData()
+                    
+                    self.indicator.stop()
+                }else if let error = error{
+                    self.recipeErrors.append(error.description)
+                    self.searchBar.endEditing(true)
+                    self.recipeTableView.reloadData()
+                    
+                    self.indicator.stop()
+                }
+            }
+            */
+            indicator.stop()
         }
     }
     
@@ -261,9 +333,13 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             cell.recipeLikeButton.isHidden = true
             cell.recipeAddButton.isHidden = true
             
-            cell.recipeImageView.image = UIImage()
+            cell.recipeImageView.image = UIImage(
+            )
             
             cell.isUserInteractionEnabled = false
+        }
+        else{
+            cell.recipeLabel.text = recipeCurations[indexPath.row]
         }
         return cell
     }
@@ -274,7 +350,14 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     @IBAction func likeRecipe(sender: UIButton){
         let title = recipes[sender.tag].recipeName as String
         
-        let activityCont: UIActivityViewController = UIActivityViewController(activityItems: [title], applicationActivities: nil)
+        let activityCont: UIActivityViewController = UIActivityViewController(activityItems: [title, UIImage()], applicationActivities: nil)
+        
+        if let popOver = activityCont.popoverPresentationController {
+            popOver.sourceView = self.view
+        }
+        
+        
+        activityCont.excludedActivityTypes = [UIActivityType.postToTencentWeibo]
         
         self.present(activityCont, animated: true, completion: nil)
     }
