@@ -3,12 +3,13 @@
 //  foodieApp
 //
 //  Created by Mr. Lopez on 3/12/17.
-//  Copyright © 2017 DLopezPrograms. All rights reserved.
+//  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
+//custom recipe obj wrapper
 class CollapsableShoppingList {
     let label: String
     let children: [CollapsableShoppingList]
@@ -88,6 +89,7 @@ class ShoppingListViewController: UITableViewController {
         shoppingListTableView.reloadData()
     }
     
+    //grab all saved recipes
     func fetchRequest() -> NSFetchRequest<Recipe> {
         let nsFetch = NSFetchRequest<Recipe>(entityName: "Recipe")
         nsFetch.returnsObjectsAsFaults = false
@@ -95,53 +97,60 @@ class ShoppingListViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        //return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        //return the number of rows
         return displayedRows.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "recipeIngCell", for: indexPath) as! ShoppingListTableViewCell
         
         let viewCell = displayedRows[indexPath.row]
+        
         // Configure the cell...
         if (cell.infoLabel.text != nil) {
             cell.infoLabel.text = viewCell.label
         }
         
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: false)
-         let viewModel = displayedRows[indexPath.row]
+        let selectedRecipe = displayedRows[indexPath.row]
             
         
-        if viewModel.children.count > 0 {
-            let range = indexPath.row+1...indexPath.row+viewModel.children.count as CountableClosedRange<Int>
+        //if children count is > 0, there are ings in the recipe
+        if selectedRecipe.children.count > 0 {
+            let range = indexPath.row+1...indexPath.row+selectedRecipe.children.count as CountableClosedRange<Int>
             
             let indexPaths = range.map{return NSIndexPath.init(row: $0, section: indexPath.section)} as [IndexPath]
             
             shoppingListTableView.beginUpdates()
-            if viewModel.isCollapsed {
-                displayedRows.insert(contentsOf: viewModel.children, at: indexPath.row+1)
+            
+            if selectedRecipe.isCollapsed {
+                displayedRows.insert(contentsOf: selectedRecipe.children, at: indexPath.row+1)
                 shoppingListTableView.insertRows(at: indexPaths as [IndexPath], with: .automatic)
             } else {
                 displayedRows.removeSubrange(range)
                 shoppingListTableView.deleteRows(at: indexPaths, with: .automatic)
             }
+            
             shoppingListTableView.endUpdates()
         }
-        viewModel.isCollapsed = !viewModel.isCollapsed
+        
+        //update the isCollapsed status of cell
+        selectedRecipe.isCollapsed = !selectedRecipe.isCollapsed
     }
     
+    //allowing editing for only an enclosing recipe cell, not an ingredient cell
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if (displayedRows[indexPath.row].isDeletable == true){
             return true
@@ -149,14 +158,6 @@ class ShoppingListViewController: UITableViewController {
             return false
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     
     // Override to support editing the table view.
@@ -189,35 +190,6 @@ class ShoppingListViewController: UITableViewController {
                 shoppingListTableView.endUpdates()
                 shoppingListTableView.reloadData()
             }
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -3,7 +3,7 @@
 //  foodieApp
 //
 //  Created by Mr. Lopez on 2/27/17.
-//  Copyright © 2017 DLopezPrograms. All rights reserved.
+//  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
 
 // The getExplorePageData method makes the POST and then gets a response that is a Data object.
