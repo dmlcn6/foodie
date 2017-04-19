@@ -19,7 +19,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     var objects = [String]()
     var recipes = [FoodieRecipe]()
     var recipeErrors = [String]()
-    var recipeCurations = [String]()
+    var recipeCurations = [FoodieRecipe]()
     var searchBar = UISearchBar()
     @IBOutlet weak var mealSelection: UISegmentedControl!
     @IBOutlet weak var dietInput: UITextField!
@@ -58,7 +58,11 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             //some smoothies
             
             
-            recipeCurations = ["Smoothies for Sunrises!",""]
+            recipeCurations = [
+                FoodieRecipe.init(name: "Smoothies for Sunrises!", id: 0, image: UIImage(named: "smoothiesforsunrises.jpg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "In a Rush? Need a quick Bkfast?", id: 0, image:  UIImage(named: "quickbreakfast.jpeg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "Sunday Mornin' Breaksfasts", id: 0, image:  UIImage(named: "sundaymorningbreakfasts.jpg")!, time: 0, servings: 0)
+            ]
             
             print("hello morning\(hour)")
         }else if(hour >= 12 && hour < 18){
@@ -67,7 +71,14 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             //some healthy lunches
             //some high protein smoothies
             
-            recipeCurations = ["","Delicious Snacks To Keep You Going!",""]
+            recipeCurations = [
+                FoodieRecipe.init(name: "Skip the Fast Food Run! Try these Healthy Vegan Lunches", id: 0, image:  UIImage(named: "healthyveganlunches.jpg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "Quick & Delicious Salads for Lunch!", id: 0, image:  UIImage(named: "saladsforlunch.jpeg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "Hungry at home? Grab and Go Snacks.", id: 0, image:  UIImage(named: "grabandgosnacks.jpg")!, time: 0, servings: 0)
+            ]
+            
+            
+            
             
             print("hello afternoon\(hour)")
         }else {
@@ -76,7 +87,11 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             //some very quick dinners
             //some high protein smoothies
             
-            recipeCurations = ["Recovery Smoothies","Main Courses of the Week","30 Mouth Watering Vegan Dinners"]
+            recipeCurations = [
+                FoodieRecipe.init(name: "Main Courses of the Week", id: 0, image:  UIImage(named: "maincoursesoftheweekjpeg.jpeg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "Recovery Smoothies", id: 0, image:  UIImage(named: "recoverysmoothies.jpg")!, time: 0, servings: 0),
+                FoodieRecipe.init(name: "30 Mouth Watering Vegan Dinners", id: 0, image:  UIImage(named: "mouthwateringvegandinners.jpeg")!, time: 0, servings: 0)
+            ]
             print("hello NightTime\(hour)")
         }
 
@@ -100,7 +115,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         recipes.removeAll()
         recipeErrors.removeAll()
-        recipeTableView.reloadData()
+        //recipeTableView.reloadData()
         
         var queryString = "?instructionsRequired=true"
         var query = ""
@@ -155,7 +170,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
         
         if let search = searchBar.text {
             var validSearch = true
-            if (search.contains(" ") ){
+            if (search.contains(" ") && search.characters.count > 1){
                 let badSearch = search.trimmingCharacters(in: .whitespaces)
                 if (badSearch.characters.count < 1) {
                     //alert you must enter text
@@ -187,6 +202,8 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
                         
                     }
                 }
+            }else if (search.contains(" ") && search.characters.count == 1){
+                query = ""
             }else {
                 query += search
             }
@@ -339,7 +356,8 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             cell.isUserInteractionEnabled = false
         }
         else{
-            cell.recipeLabel.text = recipeCurations[indexPath.row]
+            cell.recipeLabel.text = recipeCurations[indexPath.row].recipeName
+            cell.recipeImageView.image = recipeCurations[indexPath.row].recipeImage
         }
         return cell
     }

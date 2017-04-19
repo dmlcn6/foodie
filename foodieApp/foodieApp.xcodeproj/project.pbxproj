@@ -25,6 +25,15 @@
 		E0B1548B1E63AECE000CE4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154891E63AECE000CE4C2 /* Main.storyboard */; };
 		E0B154901E63AECE000CE4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */; };
 		E0B154931E63AECE000CE4C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0B154911E63AECE000CE4C2 /* LaunchScreen.storyboard */; };
+		E0CFDC2F1EA81C950049F9F3 /* quickbreakfast.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC241EA81C950049F9F3 /* quickbreakfast.jpeg */; };
+		E0CFDC301EA81C950049F9F3 /* smoothiesforsunrises.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC251EA81C950049F9F3 /* smoothiesforsunrises.jpg */; };
+		E0CFDC311EA81C950049F9F3 /* sundaymorningbreakfasts.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC261EA81C950049F9F3 /* sundaymorningbreakfasts.jpg */; };
+		E0CFDC321EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC281EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg */; };
+		E0CFDC331EA81C950049F9F3 /* mouthwateringvegandinners.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC291EA81C950049F9F3 /* mouthwateringvegandinners.jpeg */; };
+		E0CFDC341EA81C950049F9F3 /* recoverysmoothies.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC2A1EA81C950049F9F3 /* recoverysmoothies.jpg */; };
+		E0CFDC351EA81C950049F9F3 /* grabandgosnacks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC2C1EA81C950049F9F3 /* grabandgosnacks.jpg */; };
+		E0CFDC361EA81C950049F9F3 /* healthyveganlunches.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC2D1EA81C950049F9F3 /* healthyveganlunches.jpg */; };
+		E0CFDC371EA81C950049F9F3 /* saladsforlunch.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E0CFDC2E1EA81C950049F9F3 /* saladsforlunch.jpeg */; };
 		E0F0565A1E9A63A40074186A /* MealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */; };
 		E0F0565C1E9A719A0074186A /* MealHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */; };
 		E0F0565E1E9B1BF80074186A /* ActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */; };
@@ -51,6 +60,15 @@
 		E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0B154921E63AECE000CE4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0B154941E63AECE000CE4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0CFDC241EA81C950049F9F3 /* quickbreakfast.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = quickbreakfast.jpeg; sourceTree = "<group>"; };
+		E0CFDC251EA81C950049F9F3 /* smoothiesforsunrises.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smoothiesforsunrises.jpg; sourceTree = "<group>"; };
+		E0CFDC261EA81C950049F9F3 /* sundaymorningbreakfasts.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sundaymorningbreakfasts.jpg; sourceTree = "<group>"; };
+		E0CFDC281EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = maincoursesoftheweekjpeg.jpeg; sourceTree = "<group>"; };
+		E0CFDC291EA81C950049F9F3 /* mouthwateringvegandinners.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mouthwateringvegandinners.jpeg; sourceTree = "<group>"; };
+		E0CFDC2A1EA81C950049F9F3 /* recoverysmoothies.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = recoverysmoothies.jpg; sourceTree = "<group>"; };
+		E0CFDC2C1EA81C950049F9F3 /* grabandgosnacks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = grabandgosnacks.jpg; sourceTree = "<group>"; };
+		E0CFDC2D1EA81C950049F9F3 /* healthyveganlunches.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = healthyveganlunches.jpg; sourceTree = "<group>"; };
+		E0CFDC2E1EA81C950049F9F3 /* saladsforlunch.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = saladsforlunch.jpeg; sourceTree = "<group>"; };
 		E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealCollectionViewCell.swift; sourceTree = "<group>"; };
 		E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealHeaderReusableView.swift; sourceTree = "<group>"; };
 		E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorController.swift; sourceTree = "<group>"; };
@@ -143,13 +161,54 @@
 				E0A616B11E76F29500812B6A /* foodieApp.xcdatamodeld */,
 				E0B154941E63AECE000CE4C2 /* Info.plist */,
 				E0B1548F1E63AECE000CE4C2 /* Assets.xcassets */,
-				E0804DD71E998E4000DD1473 /* Models */,
 				E0804DC81E998D3300DD1473 /* DataAccess */,
 				E0804DBB1E998CFD00DD1473 /* Controllers */,
 				E0804DCC1E998D3300DD1473 /* ViewCells */,
+				E0CFDC221EA81C950049F9F3 /* CoverPhotos */,
+				E0804DD71E998E4000DD1473 /* Models */,
 				E029DD4F1E69E3F9006449B7 /* Support */,
 			);
 			path = foodieApp;
+			sourceTree = "<group>";
+		};
+		E0CFDC221EA81C950049F9F3 /* CoverPhotos */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFDC231EA81C950049F9F3 /* Breakfast */,
+				E0CFDC271EA81C950049F9F3 /* Dinner */,
+				E0CFDC2B1EA81C950049F9F3 /* Lunch */,
+			);
+			path = CoverPhotos;
+			sourceTree = "<group>";
+		};
+		E0CFDC231EA81C950049F9F3 /* Breakfast */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFDC241EA81C950049F9F3 /* quickbreakfast.jpeg */,
+				E0CFDC251EA81C950049F9F3 /* smoothiesforsunrises.jpg */,
+				E0CFDC261EA81C950049F9F3 /* sundaymorningbreakfasts.jpg */,
+			);
+			path = Breakfast;
+			sourceTree = "<group>";
+		};
+		E0CFDC271EA81C950049F9F3 /* Dinner */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFDC281EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg */,
+				E0CFDC291EA81C950049F9F3 /* mouthwateringvegandinners.jpeg */,
+				E0CFDC2A1EA81C950049F9F3 /* recoverysmoothies.jpg */,
+			);
+			path = Dinner;
+			sourceTree = "<group>";
+		};
+		E0CFDC2B1EA81C950049F9F3 /* Lunch */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFDC2C1EA81C950049F9F3 /* grabandgosnacks.jpg */,
+				E0CFDC2D1EA81C950049F9F3 /* healthyveganlunches.jpg */,
+				E0CFDC2E1EA81C950049F9F3 /* saladsforlunch.jpeg */,
+			);
+			path = Lunch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,9 +271,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				E029DD511E69E442006449B7 /* Keys.plist in Resources */,
+				E0CFDC351EA81C950049F9F3 /* grabandgosnacks.jpg in Resources */,
+				E0CFDC371EA81C950049F9F3 /* saladsforlunch.jpeg in Resources */,
+				E0CFDC301EA81C950049F9F3 /* smoothiesforsunrises.jpg in Resources */,
+				E0CFDC321EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg in Resources */,
+				E0CFDC2F1EA81C950049F9F3 /* quickbreakfast.jpeg in Resources */,
+				E0CFDC341EA81C950049F9F3 /* recoverysmoothies.jpg in Resources */,
+				E0CFDC331EA81C950049F9F3 /* mouthwateringvegandinners.jpeg in Resources */,
 				E0B154931E63AECE000CE4C2 /* LaunchScreen.storyboard in Resources */,
+				E0CFDC361EA81C950049F9F3 /* healthyveganlunches.jpg in Resources */,
 				E0B154901E63AECE000CE4C2 /* Assets.xcassets in Resources */,
 				E0B1548B1E63AECE000CE4C2 /* Main.storyboard in Resources */,
+				E0CFDC311EA81C950049F9F3 /* sundaymorningbreakfasts.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
