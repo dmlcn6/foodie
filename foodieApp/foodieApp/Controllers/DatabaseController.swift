@@ -8,10 +8,29 @@
 
 import Foundation
 import CoreData
+import Firebase
 
 class DatabaseController{
     
-    //let databaseController = DatabaseController();
+    //singleton of DB controller
+    private static var sharedInstance: DatabaseController = {
+        let dbInstance = DatabaseController()
+        dbInstance.firebaseSingleton = FIRDatabase.database().reference()
+        
+        return dbInstance
+    }()
+    
+    private init () {
+        self.firebaseSingleton = FIRDatabaseReference()
+    }
+    
+    //MARK: - Class Variables
+    var firebaseSingleton: FIRDatabaseReference!
+    
+    //MARK: - DB Singleton Accessor
+    class func shared() -> DatabaseController {
+        return sharedInstance
+    }
     
     static var persistentContainer: NSPersistentContainer = {
         /*
