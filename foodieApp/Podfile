@@ -8,5 +8,6 @@ target 'foodieApp' do
   # Pods for foodieApp
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Auth'
 
 end
