@@ -1,0 +1,6 @@
+framework module Pods_foodieApp {
+  umbrella header "Pods-foodieApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

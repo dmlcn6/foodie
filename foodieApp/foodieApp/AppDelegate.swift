@@ -3,11 +3,12 @@
 //  foodieApp
 //
 //  Created by Mr. Lopez on 2/26/17.
-//  Copyright © 2017 DLopezPrograms. All rights reserved.
+//  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //load FireBase Framework
+        FIRApp.configure()
+        
         return true
     }
 
