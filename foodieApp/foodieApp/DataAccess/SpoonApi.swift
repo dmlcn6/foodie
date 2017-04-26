@@ -32,17 +32,58 @@
 
 import UIKit
 import Foundation
+import Firebase
 
 class SpoonApi: NSObject {
+    
+    // MARK: - INIT Class Singleton
+    
+    //set initial values to setup URL tasks
+    private override init() {
+        //declared a private init so there are no inits
+        self.baseURL  = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
+        self.config = URLSessionConfiguration.default
+        self.recipesArray = [Recipe]()
+        self.httpReturnValue = HTTPURLResponse()
+        self.jsonResponse = Data()
+        self.getHeaders = [:]
+        
+        //grab firebaseSingleton for db access
+        self.dbAccess = DatabaseController.shared().firebaseSingleton
+        
+    }
+    
+    //create singleton for use thru app
+    private static var sharedInstance: SpoonApi = {
+        //get auth key first time user access shared instance
+        
+        let sharedSpoon = SpoonApi()
+        
+        //set headers once for all get reqs
+        sharedSpoon.getHeaders = [
+            "cache-control": "no-cache",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "x-mashape-key": getAuthKey()
+        ]
+        
+        return sharedSpoon
+    }()
+    
+    // MARK: - Singleton Accessor Func
+    class func shared() -> SpoonApi {
+        return sharedInstance
+    }
+    
+    
     // MARK: - Class Members
-    let baseURL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
-    
-    // Session Configuration \\
-    let config = URLSessionConfiguration.default
-    
-    var recipesArray = [Recipe]()
-    var httpReturnValue = HTTPURLResponse()
-    var jsonResponse = Data()
+    let baseURL: String
+    let config: URLSessionConfiguration
+    var getHeaders: [String:String]
+    var recipesArray: [Recipe]
+    var httpReturnValue: HTTPURLResponse
+    var jsonResponse: Data
+    var dbAccess: FIRDatabaseReference
     
     
     // MARK: - Global URL Config
@@ -63,7 +104,10 @@ class SpoonApi: NSObject {
         }
     }
     
+    
     // MARK: - API Requests
+    
+    //specific data about a single recipe, based on recipeId
     func getAdvancedRecipeData(recipeId: Double, completionHandler: @escaping (Data?, String?) -> Void) {
         
         //paramName=param&paramName=param
@@ -74,14 +118,14 @@ class SpoonApi: NSObject {
         let fullURLstring:String = "\(baseURL)\(informationURI)\(params)"
         
         // Request Headers for GET \\
-        let headers = [
-            "cache-control": "no-cache",
-            "accept": "application/json",
-            "content-type": "application/json",
-            "x-mashape-key": getAuthKey()
-        ]
+//        let headers = [
+//            "cache-control": "no-cache",
+//            "accept": "application/json",
+//            "content-type": "application/json",
+//            "x-mashape-key": getAuthKey()
+//        ]
         
-        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers) {
+        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders) {
         
             // Load configuration into Session \\
             let session = URLSession(configuration: config)
@@ -91,10 +135,13 @@ class SpoonApi: NSObject {
                 if let urlResp = response{
                     print(urlResp)
                     
+                    //parse away } and {
                     let respParse = urlResp.description.components(separatedBy: ["{","}"])
                         
                     if(respParse.count > 0){
                         var count = 0
+                        
+                        //response headers
                         let heads = respParse[4].components(separatedBy: [";","="])
                         
                         for header in heads {
@@ -104,7 +151,11 @@ class SpoonApi: NSObject {
                                 
                                 let remaining = heads[count+1].components(separatedBy: ["\""," "])
                                 if let remainReqs = Int(remaining[1]){
-                                    print("REMAINING REQS == \(remainReqs)")
+                                    
+                                    //get request limit
+                                    print("\n\nREMAINING REQS == \(remainReqs)\n\n")
+                                    
+                                    //store in firebase as new remaing reqs
                                 }
                             }
                             count += 1
@@ -136,6 +187,8 @@ class SpoonApi: NSObject {
         
     }
     
+    //searching for multiple recipes based on query, returning small recipe data
+    //returning: recipeId, recipeName,
     func getExplorePageData(queryString: String, completionHandler: @escaping (Data?, String?) -> Void) {
         /*
          diet - pescetarian, lacto vegetarian, ovo vegetarian, vegan, and vegetarian
@@ -157,15 +210,15 @@ class SpoonApi: NSObject {
         
         let fullURLstring:String = "\(baseURL)\(recipeURI)\(queryString)"
         
-        // Request Headers for GET \\
-        let headers = [
-            "cache-control": "no-cache",
-            "accept": "application/json",
-            "content-type": "application/json",
-            "x-mashape-key": getAuthKey()
-        ]
+//        // Request Headers for GET \\
+//        let headers = [
+//            "cache-control": "no-cache",
+//            "accept": "application/json",
+//            "content-type": "application/json",
+//            "x-mashape-key": getAuthKey()
+//        ]
         
-        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers){
+        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders){
             
             // Load configuration into Session \\
             let session = URLSession(configuration: config)
@@ -199,15 +252,15 @@ class SpoonApi: NSObject {
         
         let fullURLstring:String = "\(baseURL)\(mealPlanURI)\(queryString)"
         
-        // Request Headers for GET \\
-        let headers = [
-            "cache-control": "no-cache",
-            "accept": "application/json",
-            "content-type": "application/json",
-            "x-mashape-key": getAuthKey()
-        ]
+//        // Request Headers for GET \\
+//        let headers = [
+//            "cache-control": "no-cache",
+//            "accept": "application/json",
+//            "content-type": "application/json",
+//            "x-mashape-key": getAuthKey()
+//        ]
         
-        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: headers) {
+        if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders) {
             
             // Load configuration into Session \\
             let session = URLSession(configuration: config)
@@ -232,7 +285,7 @@ class SpoonApi: NSObject {
     }
     
     // MARK: - Auth Key
-    func getAuthKey() -> String {
+    private class func getAuthKey() -> String {
         var keys: NSDictionary?
         
         

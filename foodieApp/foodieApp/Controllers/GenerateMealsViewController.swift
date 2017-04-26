@@ -10,7 +10,8 @@ import UIKit
 
 class GenerateMealsViewController: UIViewController{
     
-    var spoonApiAccess = SpoonApi()
+    //access SpoonApi singleton instance
+    var spoonApiAccess: SpoonApi!
     
     @IBOutlet weak var dietInput: UITextField!
     @IBOutlet weak var excludedInput: UITextField!
@@ -26,8 +27,12 @@ class GenerateMealsViewController: UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        //grab spoonApi singleton from tabbarviewcont
+        if let tbvc = tabBarController as? TabBarController{
+            spoonApiAccess = tbvc.spoonApi
+        }
+        
         // Header pin Is only feature of UICollectionViewFlowLayout not UICollectionViewLayout
         if let layout = mealsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout{
             layout.sectionHeadersPinToVisibleBounds = true
@@ -163,9 +168,7 @@ class GenerateMealsViewController: UIViewController{
                             for (key, value) in result{
                                 
                                 //print("\n\nVALUE: \(value)\n\n")
-                                if (key == "day"){
-                                    
-                                }
+                                
                                 if (key == "slot"){
                                     if let value = value as? Int{
                                         foodHour = value
