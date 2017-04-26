@@ -49,7 +49,7 @@ class ShoppingListViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func getData() {
+    private func getData() {
         let context = DatabaseController.getContext()
         
         var collapsedCellList:[CollapsableShoppingList] = [CollapsableShoppingList]()
@@ -90,7 +90,7 @@ class ShoppingListViewController: UITableViewController {
     }
     
     //grab all saved recipes
-    func fetchRequest() -> NSFetchRequest<Recipe> {
+    private func fetchRequest() -> NSFetchRequest<Recipe> {
         let nsFetch = NSFetchRequest<Recipe>(entityName: "Recipe")
         nsFetch.returnsObjectsAsFaults = false
         return nsFetch
@@ -112,9 +112,14 @@ class ShoppingListViewController: UITableViewController {
         
         let viewCell = displayedRows[indexPath.row]
         
+        
         // Configure the cell...
         if (cell.infoLabel.text != nil) {
             cell.infoLabel.text = viewCell.label
+            
+            if displayedRows[indexPath.row].isDeletable == true {
+                
+            }
         }
         
         
