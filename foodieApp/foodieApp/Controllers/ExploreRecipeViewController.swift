@@ -7,9 +7,7 @@
 //
 
 import UIKit
-import Foundation
 import CoreData
-
 
 class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     

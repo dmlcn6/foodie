@@ -5,14 +5,9 @@
 //  Created by Mr. Lopez on 4/26/17.
 //  Copyright © 2017 DLopezPrograms. All rights reserved.
 //
-
-import UIKit
 import AVKit
-import Foundation
 import AVFoundation
 import FirebaseAuth
-import NotificationCenter
-
 
 class LaunchViewController: UIViewController {
 
@@ -41,6 +36,8 @@ class LaunchViewController: UIViewController {
         return player
     }()
     
+    
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,27 +58,6 @@ class LaunchViewController: UIViewController {
             
         notifCenter.addObserver(self, selector: #selector(LaunchViewController.loopVideo), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime , object: nil)
 
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    //reused alert system for error messages from firebase
-    func alertUserUpdate(withTitle resultsTitle: String, error: Error?) {
-        if let error = error {
-            let message = "\(error.localizedDescription)"
-            let okAction = UIAlertAction.init(title: "Ok", style: .default) {
-                action in print("\n\nhit Ok to error \(error.localizedDescription) in \(resultsTitle)\n\n")
-            }
-            let alertController  = UIAlertController.init(title: resultsTitle,
-                                                          message: message, preferredStyle: .alert)
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true, completion: nil)
-            return
-        }
-        
     }
     
     //MARK: - Firebase User AUTH
@@ -145,9 +121,23 @@ class LaunchViewController: UIViewController {
     @IBAction func guestButtonClicked(_ sender: Any) {
     }
     
+    //MARK: - Helper Functions
+    @objc private func loopVideo() {
+        
+        //i <3 sngltns
+        
+        //loop THAT Launch Video!!
+        //reset the seek time to 0
+        //replay
+        self.splashPlayer.seek(to: kCMTimeZero)
+        
+        //CCCAAAANN D00000!!!
+        self.splashPlayer.play()
+    }
+    
+    //error checks the two user credential fields: email/pword
     private func validateTextFields() -> Bool {
         
-        //if neither fields are null
         if let emailText = emailField.text, let passwordText = passwordField.text {
             if (emailText.contains(" ") || passwordText.contains(" ")){
                 return false
@@ -161,20 +151,23 @@ class LaunchViewController: UIViewController {
         }
     }
     
-    //reset the seek time to 0
-    //replay
-    func loopVideo() {
+    
+    //reused alert system for error messages from firebase
+    private func alertUserUpdate(withTitle resultsTitle: String, error: Error?) {
+        if let error = error {
+            let message = "\(error.localizedDescription)"
+            let okAction = UIAlertAction.init(title: "Ok", style: .default) {
+                action in print("\n\nhit Ok to error \(error.localizedDescription) in \(resultsTitle)\n\n")
+            }
+            let alertController  = UIAlertController.init(title: resultsTitle,
+                                                          message: message, preferredStyle: .alert)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
         
-        //i <3 sngltns
-        
-        //loop THAT SHIZZ!!
-        self.splashPlayer.seek(to: kCMTimeZero)
-        
-        //CCCAAAANN D00000!!!
-        self.splashPlayer.play()
     }
     
-
     
     // MARK: - Navigation
 

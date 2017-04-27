@@ -6,7 +6,6 @@
 //  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
 
-import Foundation
 import CoreData
 import Firebase
 

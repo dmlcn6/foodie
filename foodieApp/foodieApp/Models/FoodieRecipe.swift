@@ -5,8 +5,6 @@
 //  Created by Mr. Lopez on 3/1/17.
 //  Copyright © 2017 Darryl Lopez. All rights reserved.
 //
-
-import Foundation
 import UIKit
 
 class FoodieRecipe: NSObject{

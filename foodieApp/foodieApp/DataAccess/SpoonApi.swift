@@ -31,8 +31,6 @@
 // from another thread than the main thread.
 
 import UIKit
-import Foundation
-import Firebase
 
 class SpoonApi: NSObject {
     
@@ -47,10 +45,6 @@ class SpoonApi: NSObject {
         self.httpReturnValue = HTTPURLResponse()
         self.jsonResponse = Data()
         self.getHeaders = [:]
-        
-        //grab firebaseSingleton for db access
-        self.dbAccess = DatabaseController.shared().firebaseSingleton
-        
     }
     
     //create singleton for use thru app
@@ -83,7 +77,7 @@ class SpoonApi: NSObject {
     var recipesArray: [Recipe]
     var httpReturnValue: HTTPURLResponse
     var jsonResponse: Data
-    var dbAccess: FIRDatabaseReference
+    
     
     
     // MARK: - Global URL Config

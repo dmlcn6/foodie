@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Foundation
 
 class RecipeCurator: NSObject {
     
