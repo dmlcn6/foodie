@@ -11,6 +11,13 @@
 		E029DD511E69E442006449B7 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = E029DD501E69E442006449B7 /* Keys.plist */; };
 		E03965111EB0BDE000E7ACA9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03965101EB0BDE000E7ACA9 /* TabBarController.swift */; };
 		E03965131EB13E7200E7ACA9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E03965121EB13E7200E7ACA9 /* GoogleService-Info.plist */; };
+		E039651A1EB1514200E7ACA9 /* fullKitchen.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E03965151EB1514200E7ACA9 /* fullKitchen.jpeg */; };
+		E039651C1EB1514200E7ACA9 /* settingTable.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E03965171EB1514200E7ACA9 /* settingTable.jpg */; };
+		E039651D1EB1514200E7ACA9 /* silverware.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E03965181EB1514200E7ACA9 /* silverware.jpg */; };
+		E039651E1EB1514200E7ACA9 /* tableCloseup.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E03965191EB1514200E7ACA9 /* tableCloseup.jpeg */; };
+		E03965221EB16B3300E7ACA9 /* givingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E03965211EB16B3300E7ACA9 /* givingIcon.png */; };
+		E03965261EB16BF700E7ACA9 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03965251EB16BF700E7ACA9 /* LaunchViewController.swift */; };
+		E03965281EB16E7C00E7ACA9 /* launchScreen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E03965271EB16E7C00E7ACA9 /* launchScreen.mp4 */; };
 		E0804DC21E998CFD00DD1473 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0804DBC1E998CFD00DD1473 /* DatabaseController.swift */; };
 		E0804DC31E998CFD00DD1473 /* ExploreRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0804DBD1E998CFD00DD1473 /* ExploreRecipeViewController.swift */; };
 		E0804DC41E998CFD00DD1473 /* GenerateMealsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0804DBE1E998CFD00DD1473 /* GenerateMealsViewController.swift */; };
@@ -53,6 +60,13 @@
 		E029DD501E69E442006449B7 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		E03965101EB0BDE000E7ACA9 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E03965121EB13E7200E7ACA9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E03965151EB1514200E7ACA9 /* fullKitchen.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fullKitchen.jpeg; sourceTree = "<group>"; };
+		E03965171EB1514200E7ACA9 /* settingTable.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = settingTable.jpg; sourceTree = "<group>"; };
+		E03965181EB1514200E7ACA9 /* silverware.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = silverware.jpg; sourceTree = "<group>"; };
+		E03965191EB1514200E7ACA9 /* tableCloseup.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tableCloseup.jpeg; sourceTree = "<group>"; };
+		E03965211EB16B3300E7ACA9 /* givingIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = givingIcon.png; sourceTree = "<group>"; };
+		E03965251EB16BF700E7ACA9 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		E03965271EB16E7C00E7ACA9 /* launchScreen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = launchScreen.mp4; sourceTree = "<group>"; };
 		E0804DBC1E998CFD00DD1473 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
 		E0804DBD1E998CFD00DD1473 /* ExploreRecipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecipeViewController.swift; sourceTree = "<group>"; };
 		E0804DBE1E998CFD00DD1473 /* GenerateMealsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateMealsViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +142,19 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		E03965141EB1514200E7ACA9 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				E03965271EB16E7C00E7ACA9 /* launchScreen.mp4 */,
+				E03965211EB16B3300E7ACA9 /* givingIcon.png */,
+				E03965151EB1514200E7ACA9 /* fullKitchen.jpeg */,
+				E03965171EB1514200E7ACA9 /* settingTable.jpg */,
+				E03965181EB1514200E7ACA9 /* silverware.jpg */,
+				E03965191EB1514200E7ACA9 /* tableCloseup.jpeg */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
 		E0804DBB1E998CFD00DD1473 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +167,7 @@
 				E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */,
 				E0E472391EAFF49400CA0707 /* PersonalViewController.swift */,
 				E03965101EB0BDE000E7ACA9 /* TabBarController.swift */,
+				E03965251EB16BF700E7ACA9 /* LaunchViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -216,6 +244,7 @@
 		E0CFDC221EA81C950049F9F3 /* CoverPhotos */ = {
 			isa = PBXGroup;
 			children = (
+				E03965141EB1514200E7ACA9 /* Launch */,
 				E0CFDC231EA81C950049F9F3 /* Breakfast */,
 				E0CFDC2B1EA81C950049F9F3 /* Lunch */,
 				E0CFDC271EA81C950049F9F3 /* Dinner */,
@@ -317,17 +346,23 @@
 			files = (
 				E029DD511E69E442006449B7 /* Keys.plist in Resources */,
 				E0CFDC351EA81C950049F9F3 /* grabandgosnacks.jpg in Resources */,
+				E039651A1EB1514200E7ACA9 /* fullKitchen.jpeg in Resources */,
 				E0CFDC371EA81C950049F9F3 /* saladsforlunch.jpeg in Resources */,
 				E0CFDC301EA81C950049F9F3 /* smoothiesforsunrises.jpg in Resources */,
 				E0CFDC321EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg in Resources */,
+				E039651C1EB1514200E7ACA9 /* settingTable.jpg in Resources */,
+				E039651D1EB1514200E7ACA9 /* silverware.jpg in Resources */,
 				E0CFDC2F1EA81C950049F9F3 /* quickbreakfast.jpeg in Resources */,
 				E0CFDC341EA81C950049F9F3 /* recoverysmoothies.jpg in Resources */,
 				E0CFDC331EA81C950049F9F3 /* mouthwateringvegandinners.jpeg in Resources */,
+				E039651E1EB1514200E7ACA9 /* tableCloseup.jpeg in Resources */,
 				E0B154931E63AECE000CE4C2 /* LaunchScreen.storyboard in Resources */,
 				E0CFDC361EA81C950049F9F3 /* healthyveganlunches.jpg in Resources */,
 				E0B154901E63AECE000CE4C2 /* Assets.xcassets in Resources */,
 				E0B1548B1E63AECE000CE4C2 /* Main.storyboard in Resources */,
+				E03965221EB16B3300E7ACA9 /* givingIcon.png in Resources */,
 				E0CFDC311EA81C950049F9F3 /* sundaymorningbreakfasts.jpg in Resources */,
+				E03965281EB16E7C00E7ACA9 /* launchScreen.mp4 in Resources */,
 				E03965131EB13E7200E7ACA9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +426,7 @@
 				E0E4723C1EAFF62C00CA0707 /* FoodPrefCollectionViewCell.swift in Sources */,
 				E0804DD41E998D3300DD1473 /* MealTableViewCell.swift in Sources */,
 				E0804DD11E998D3300DD1473 /* SpoonApi.swift in Sources */,
+				E03965261EB16BF700E7ACA9 /* LaunchViewController.swift in Sources */,
 				E0804DC71E998CFD00DD1473 /* ShowRecipeViewController.swift in Sources */,
 				E0B154861E63AECE000CE4C2 /* AppDelegate.swift in Sources */,
 				E0F0565A1E9A63A40074186A /* MealCollectionViewCell.swift in Sources */,
