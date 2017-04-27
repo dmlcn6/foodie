@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import Firebase
 
 class TabBarController: UITabBarController {
     
     let spoonApi: SpoonApi = SpoonApi.shared()
+    var currUser: Any!
     
     override func viewDidLoad() {
         super.viewDidLoad()
