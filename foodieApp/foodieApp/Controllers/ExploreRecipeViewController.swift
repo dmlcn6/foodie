@@ -26,12 +26,18 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var recipeTableView: UITableView!
 
     //DB access
-    var spoonApiAccess = SpoonApi.shared()
+    var spoonApiAccess: SpoonApi!
 
     
     // MARK: - ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //grab spoonApi singleton from tabbarviewcont
+        if let tbvc = tabBarController as? TabBarController{
+            spoonApiAccess = tbvc.spoonApi
+        }
+
         
         // Do any additional setup after loading the view.
         objects = ["recipe1","recipe2","Recipe3","recipe4","recipe5","Recipe6"]
@@ -262,7 +268,8 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             
             let selectedRecipeId = recipes[indexPath.row].recipeId
             
-            spoonApiAccess.getAdvancedRecipeData(recipeId: selectedRecipeId){
+            
+            self.spoonApiAccess.getAdvancedRecipeData(recipeId: selectedRecipeId){
                 (data,error) in
                 
                 if let data = data {
