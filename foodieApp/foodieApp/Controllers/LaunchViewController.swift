@@ -15,6 +15,7 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     var authUser: FIRUser!
+    var keepLooping: Bool = true
     
     //MARK: - AVPlayer Singleton
     //singleton of splash player
@@ -35,7 +36,10 @@ class LaunchViewController: UIViewController {
         
         return player
     }()
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        keepLooping = true
+    }
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
@@ -80,12 +84,20 @@ class LaunchViewController: UIViewController {
                     if let user = user, let uEmail = user.email {
                         print("\n\n\(uEmail) Signed In!\n")
                         self.authUser = user
+                        
+                        self.keepLooping = false
                         self.performSegue(withIdentifier: "validAuth", sender: self)
                     }
                 }
             }
         }else{
             alertUserUpdate(withTitle: "Login Error!", error: NSError.init(domain: "Invalid login input.", code: 404, userInfo: nil))
+        }
+        
+        if let auth = FIRAuth.auth(), let user = auth.currentUser {
+            print("\n\n\(user.email) Signed In!\n")
+        }else {
+            print("\n\n NOONE Signed In!\n")
         }
 
     }
@@ -109,6 +121,7 @@ class LaunchViewController: UIViewController {
                     if let user = user, let uEmail = user.email {
                         print("\(uEmail) created")
                         self.authUser = user
+                        self.keepLooping = false
                         self.performSegue(withIdentifier: "validAuth", sender: self)
                     }
                 }
@@ -127,14 +140,16 @@ class LaunchViewController: UIViewController {
         //i <3 sngltns
         
         //loop THAT Launch Video!!
-        //reset the seek time to 0
-        //replay
-        self.splashPlayer.seek(to: kCMTimeZero)
-        
-        //CCCAAAANN D00000!!!
-        self.splashPlayer.play()
+        //only if user is on this login View
+        if (keepLooping) {
+            //reset the seek time to 0
+            //replay
+            self.splashPlayer.seek(to: kCMTimeZero)
+            
+            //CCCAAAANN D00000!!!
+            self.splashPlayer.play()
+        }
     }
-    
     //error checks the two user credential fields: email/pword
     private func validateTextFields() -> Bool {
         
