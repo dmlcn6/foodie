@@ -317,6 +317,7 @@
 				TargetAttributes = {
 					E0B154811E63AECE000CE4C2 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 2DA2WCNU9X;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -568,6 +569,7 @@
 			baseConfigurationReference = 850209930DCC98035A8A4B82 /* Pods-foodieApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2DA2WCNU9X;
 				INFOPLIST_FILE = foodieApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.DLopezPrograms.foodieApp;
@@ -581,6 +583,7 @@
 			baseConfigurationReference = B25FA827CF61B3779B2A496F /* Pods-foodieApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2DA2WCNU9X;
 				INFOPLIST_FILE = foodieApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.DLopezPrograms.foodieApp;
