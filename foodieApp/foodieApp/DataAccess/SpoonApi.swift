@@ -237,7 +237,7 @@ class SpoonApi: NSObject {
                                     print("\n\n🔥REMAINING REQS == \(remainReqs)🔥\n\n")
                                     
                                     //store in firebase as new remaing reqs
-                                    
+                                    self.setRequestNum(newReqs: remainReqs)
                                     
                                 }
                             }

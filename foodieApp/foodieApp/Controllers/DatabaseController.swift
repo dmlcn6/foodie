@@ -48,7 +48,6 @@ class DatabaseController{
                     
                     print("\n\nsnapshot CHILD COUNT:: \(snapshot.childrenCount)\n\n")
                     print("\n\nsnapshot DESCRIPTION:: \(snapshot.description)\n\n")
-                    print("\n\nsnapshot VALUE:: \(snapshot.value)\n\n")
                     
                     if let value = snapshot.value as? Int {
                         returnValue = value
