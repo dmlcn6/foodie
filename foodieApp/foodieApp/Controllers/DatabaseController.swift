@@ -8,13 +8,15 @@
 
 import CoreData
 import Firebase
+import FirebaseAuth
+typealias AuthClosure = (Int?) -> Void
 
 class DatabaseController{
     
     //singleton of DB controller
     private static var sharedInstance: DatabaseController = {
         let dbInstance = DatabaseController()
-        dbInstance.firebaseSingleton = FIRDatabase.database().reference()
+        dbInstance.firebaseSingleton = FIRDatabase .database().reference(withPath: "foodieappserver")
         
         return dbInstance
     }()
@@ -29,6 +31,81 @@ class DatabaseController{
     //MARK: - DB Singleton Accessor
     class func shared() -> DatabaseController {
         return sharedInstance
+    }
+    
+    //
+    func getRequestsAvailable(completionHandle: @escaping AuthClosure) {
+        var returnValue: Int? = nil
+        
+        let requestRef = firebaseSingleton.child("foodieRequestLimit").child("requestsAvailable")
+        
+        
+        
+            if let auth = FIRAuth.auth(), let _ = auth.currentUser {
+                
+                _ = requestRef.observe(.value, with: {
+                    (snapshot) in
+                    
+                    print("\n\nsnapshot CHILD COUNT:: \(snapshot.childrenCount)\n\n")
+                    print("\n\nsnapshot DESCRIPTION:: \(snapshot.description)\n\n")
+                    print("\n\nsnapshot VALUE:: \(snapshot.value)\n\n")
+                    
+                    if let value = snapshot.value as? Int {
+                        returnValue = value
+                    }
+                    
+                    
+                    completionHandle(returnValue)
+                    
+                })
+                
+            }else {
+                 returnValue = nil
+            }
+        
+    }
+    
+    func setRequestsAvailable(_ newReqs: Int) -> Int{
+        let requestRef = firebaseSingleton.child("/foodieappserver/foodieRequestLimit/requestsAvailable")
+        
+        //temp var to hold reqs from db
+        var reqs: Int!
+        
+        //help wait for async call to firebase
+        let sem = DispatchSemaphore.init(value: 0)
+        
+        //so i think i jsut implemented a double nested clojure
+        //requestRef.runTransactionBlock(<#T##block: (FIRMutableData) -> FIRTransactionResult##(FIRMutableData) -> FIRTransactionResult#>, andCompletionBlock: <#T##(Error?, Bool, FIRDataSnapshot?) -> Void#>)
+        
+        requestRef.runTransactionBlock({
+            (currData: FIRMutableData) -> FIRTransactionResult in
+            
+            if var postData = currData.value as? [String:Any] {
+                
+                reqs = postData["requestsAvailable"] as? Int ?? 5000
+                
+                if(newReqs < reqs){
+                    postData["requestsAvailable"] = reqs as AnyObject?
+                    return FIRTransactionResult.success(withValue: currData)
+                }
+                
+                // Set value and report transaction success
+                currData.value = postData
+            }
+
+            return FIRTransactionResult.success(withValue: currData)
+        }) { (error, status, snapshot) in
+        
+            if let error = error {
+                print("\n\n ERROR IN SET REQ NUM \(error.localizedDescription)\n\n")
+            }
+            
+            sem.signal()
+        }
+        
+        sem.wait()
+        
+        return reqs
     }
     
     static var persistentContainer: NSPersistentContainer = {

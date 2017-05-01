@@ -45,6 +45,7 @@ class SpoonApi: NSObject {
         self.httpReturnValue = HTTPURLResponse()
         self.jsonResponse = Data()
         self.getHeaders = [:]
+        self.requestsAvailable = nil
     }
     
     //create singleton for use thru app
@@ -60,6 +61,10 @@ class SpoonApi: NSObject {
             "content-type": "application/json",
             "x-mashape-key": getAuthKey()
         ]
+        
+        //get reqs num from server
+        //class var is set in func
+        getRequestNum()
         
         return sharedSpoon
     }()
@@ -77,11 +82,12 @@ class SpoonApi: NSObject {
     var recipesArray: [Recipe]
     var httpReturnValue: HTTPURLResponse
     var jsonResponse: Data
+    var requestsAvailable: Int?
     
     
     
     // MARK: - Global URL Config
-    func configureURLRequest(httpUrl: String, httpAction: String, httpHeaders: [String:String]) -> URLRequest? {
+    private func configureURLRequest(httpUrl: String, httpAction: String, httpHeaders: [String:String]) -> URLRequest? {
         
         
         // Make sure url is valid \\
@@ -111,14 +117,6 @@ class SpoonApi: NSObject {
         
         let fullURLstring:String = "\(baseURL)\(informationURI)\(params)"
         
-        // Request Headers for GET \\
-//        let headers = [
-//            "cache-control": "no-cache",
-//            "accept": "application/json",
-//            "content-type": "application/json",
-//            "x-mashape-key": getAuthKey()
-//        ]
-        
         if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders) {
         
             // Load configuration into Session \\
@@ -141,15 +139,17 @@ class SpoonApi: NSObject {
                         for header in heads {
                             
                             if(header.contains("X-RateLimit-requests-Remaining")){
-                                print("\n\nHeader\(header)")
+                                print("\n\n🔥Header\(header)🔥\n")
                                 
                                 let remaining = heads[count+1].components(separatedBy: ["\""," "])
                                 if let remainReqs = Int(remaining[1]){
                                     
                                     //get request limit
-                                    print("\n\nREMAINING REQS == \(remainReqs)\n\n")
+                                    print("\n\n🔥REMAINING REQS == \(remainReqs)🔥\n\n")
                                     
                                     //store in firebase as new remaing reqs
+                                    
+                                    
                                 }
                             }
                             count += 1
@@ -157,7 +157,7 @@ class SpoonApi: NSObject {
                             
                         
                     }else{
-                        print("\n\nRESPONSE WAS NULL!\n\n")
+                        print("\n\n🔥RESPONSE WAS NULL!🔥\n\n")
                     }
                 }
                 if error != nil {
@@ -177,7 +177,7 @@ class SpoonApi: NSObject {
     }
     
     //gonna try this w a sephamore
-    func getHomePageData(timeOfDay: String){
+    private func getHomePageData(timeOfDay: String){
         
     }
     
@@ -204,13 +204,6 @@ class SpoonApi: NSObject {
         
         let fullURLstring:String = "\(baseURL)\(recipeURI)\(queryString)"
         
-//        // Request Headers for GET \\
-//        let headers = [
-//            "cache-control": "no-cache",
-//            "accept": "application/json",
-//            "content-type": "application/json",
-//            "x-mashape-key": getAuthKey()
-//        ]
         
         if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders){
             
@@ -219,6 +212,43 @@ class SpoonApi: NSObject {
             
             let task = session.dataTask(with: urlRequest) {
                 (data, response, error) in
+                
+                if let urlResp = response{
+                    print(urlResp)
+                    
+                    //parse away } and {
+                    let respParse = urlResp.description.components(separatedBy: ["{","}"])
+                    
+                    if(respParse.count > 0){
+                        var count = 0
+                        
+                        //response headers
+                        let heads = respParse[4].components(separatedBy: [";","="])
+                        
+                        for header in heads {
+                            
+                            if(header.contains("X-RateLimit-requests-Remaining")){
+                                print("\n\n🔥Header\(header)🔥\n")
+                                
+                                let remaining = heads[count+1].components(separatedBy: ["\""," "])
+                                if let remainReqs = Int(remaining[1]){
+                                    
+                                    //get request limit
+                                    print("\n\n🔥REMAINING REQS == \(remainReqs)🔥\n\n")
+                                    
+                                    //store in firebase as new remaing reqs
+                                    
+                                    
+                                }
+                            }
+                            count += 1
+                        }
+                        
+                        
+                    }else{
+                        print("\n\n🔥RESPONSE WAS NULL!🔥\n\n")
+                    }
+                }
                 
                 if error != nil {
                     DispatchQueue.main.sync(execute: {
@@ -245,15 +275,7 @@ class SpoonApi: NSObject {
         //let params = "diet=vegetarian&excludeIngredients=coconut&targetCalories=2000&timeFrame=week"
         
         let fullURLstring:String = "\(baseURL)\(mealPlanURI)\(queryString)"
-        
-//        // Request Headers for GET \\
-//        let headers = [
-//            "cache-control": "no-cache",
-//            "accept": "application/json",
-//            "content-type": "application/json",
-//            "x-mashape-key": getAuthKey()
-//        ]
-        
+
         if let urlRequest = configureURLRequest(httpUrl: fullURLstring, httpAction: "GET", httpHeaders: getHeaders) {
             
             // Load configuration into Session \\
@@ -261,6 +283,43 @@ class SpoonApi: NSObject {
             
             let task = session.dataTask(with: urlRequest) {
                 (data, response, error) in
+                
+                if let urlResp = response{
+                    print(urlResp)
+                    
+                    //parse away } and {
+                    let respParse = urlResp.description.components(separatedBy: ["{","}"])
+                    
+                    if(respParse.count > 0){
+                        var count = 0
+                        
+                        //response headers
+                        let heads = respParse[4].components(separatedBy: [";","="])
+                        
+                        for header in heads {
+                            
+                            if(header.contains("X-RateLimit-requests-Remaining")){
+                                print("\n\n🔥Header\(header)🔥\n")
+                                
+                                let remaining = heads[count+1].components(separatedBy: ["\""," "])
+                                if let remainReqs = Int(remaining[1]){
+                                    
+                                    //get request limit
+                                    print("\n\n🔥REMAINING REQS == \(remainReqs)🔥\n\n")
+                                    
+                                    //store in firebase as new remaing reqs
+                                    
+                                    
+                                }
+                            }
+                            count += 1
+                        }
+                        
+                        
+                    }else{
+                        print("\n\n🔥RESPONSE WAS NULL!🔥\n\n")
+                    }
+                }
                 
                 if error != nil {
                     DispatchQueue.main.sync(execute: {
@@ -276,6 +335,23 @@ class SpoonApi: NSObject {
         }else {
             return
         }
+    }
+    
+    private class func getRequestNum() {
+        
+        DatabaseController.shared().getRequestsAvailable(completionHandle: {
+            (response) in
+            
+            if let response = response {
+                self.sharedInstance.requestsAvailable = response
+            }
+        
+        })
+    }
+    
+    private func setRequestNum(newReqs: Int) {
+        
+       SpoonApi.sharedInstance.requestsAvailable = DatabaseController.shared().setRequestsAvailable(newReqs)
     }
     
     // MARK: - Auth Key
