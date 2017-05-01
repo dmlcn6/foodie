@@ -65,46 +65,52 @@ class DatabaseController{
     }
     
     func setRequestsAvailable(_ newReqs: Int) -> Int{
-        let requestRef = firebaseSingleton.child("/foodieappserver/foodieRequestLimit/requestsAvailable")
         
-        //temp var to hold reqs from db
-        var reqs: Int!
-        
-        //help wait for async call to firebase
-        let sem = DispatchSemaphore.init(value: 0)
-        
-        //so i think i jsut implemented a double nested clojure
-        //requestRef.runTransactionBlock(<#T##block: (FIRMutableData) -> FIRTransactionResult##(FIRMutableData) -> FIRTransactionResult#>, andCompletionBlock: <#T##(Error?, Bool, FIRDataSnapshot?) -> Void#>)
-        
-        requestRef.runTransactionBlock({
-            (currData: FIRMutableData) -> FIRTransactionResult in
+        if let auth = FIRAuth.auth(), let _ = auth.currentUser {
+            let requestRef = firebaseSingleton.child("foodieRequestLimit")
             
-            if var postData = currData.value as? [String:Any] {
+            //temp var to hold reqs from db
+            var currReqs: Int!
+            
+            //help wait for async call to firebase
+            let sem = DispatchSemaphore.init(value: 0)
+            
+            //so i think i jsut implemented a double nested clojure
+            //requestRef.runTransactionBlock(<#T##block: (FIRMutableData) -> FIRTransactionResult##(FIRMutableData) -> FIRTransactionResult#>, andCompletionBlock: <#T##(Error?, Bool, FIRDataSnapshot?) -> Void#>)
+            
+            requestRef.runTransactionBlock({
+                (currData: FIRMutableData) -> FIRTransactionResult in
                 
-                reqs = postData["requestsAvailable"] as? Int ?? 5000
-                
-                if(newReqs < reqs){
-                    postData["requestsAvailable"] = reqs as AnyObject?
-                    return FIRTransactionResult.success(withValue: currData)
+                if var postData = currData.value as? [String:Any] {
+                    
+                    currReqs = postData["requestsAvailable"] as? Int ?? 5000
+                    
+                    if(newReqs < currReqs){
+                        postData["requestsAvailable"] = newReqs as AnyObject?
+                        currData.value = postData
+                        return FIRTransactionResult.success(withValue: currData)
+                    }
+                    
+                    // Set value and report transaction success
+                    currData.value = postData
+                }
+
+                return FIRTransactionResult.success(withValue: currData)
+            }) { (error, status, snapshot) in
+            
+                if let error = error {
+                    print("\n\n ERROR IN SET REQ NUM \(error.localizedDescription)\n\n")
                 }
                 
-                // Set value and report transaction success
-                currData.value = postData
-            }
-
-            return FIRTransactionResult.success(withValue: currData)
-        }) { (error, status, snapshot) in
-        
-            if let error = error {
-                print("\n\n ERROR IN SET REQ NUM \(error.localizedDescription)\n\n")
+                sem.signal()
             }
             
-            sem.signal()
+            sem.wait()
+            
+            return currReqs
+        }else {
+            return 5000
         }
-        
-        sem.wait()
-        
-        return reqs
     }
     
     static var persistentContainer: NSPersistentContainer = {
