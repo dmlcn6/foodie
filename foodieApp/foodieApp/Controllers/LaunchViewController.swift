@@ -9,11 +9,13 @@ import AVKit
 import AVFoundation
 import FirebaseAuth
 
-class LaunchViewController: UIViewController {
+class LaunchViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: - Class Vars
+    @IBOutlet var textFieldList: [UITextField]!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    var activeTextField: UITextField?
     var authUser: FIRUser!
     var keepLooping: Bool = true
     
@@ -44,6 +46,11 @@ class LaunchViewController: UIViewController {
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //told every field this viewcont is the delegate
+        for field in textFieldList{
+            field.delegate = self
+        }
         
         //Layer can be used as the backing layer for a UIView
         let layer = AVPlayerLayer(player: splashPlayer)
@@ -181,6 +188,22 @@ class LaunchViewController: UIViewController {
             return
         }
         
+    }
+    
+    // MARK: - Keyboard Dismissal
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField = textField
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeTextField = nil
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        activeTextField?.resignFirstResponder()
+        return true
     }
     
     
