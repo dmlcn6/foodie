@@ -199,7 +199,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             }
             
             if (validSearch){
-                queryString += "&number=1&offset=0&query=\(query)"
+                queryString += "&number=10&offset=0&query=\(query)"
                 
                 indicator.setup(parentView: self.view)
                 indicator.start()
@@ -286,7 +286,7 @@ class ExploreRecipeViewController: UIViewController, UITableViewDataSource, UITa
             }
         }else {
             
-            let selectedCuration = recipeCurations[indexPath.row]
+            _ = recipeCurations[indexPath.row]
             
             
             //let params = "diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=egg%2C+gluten&number=1&offset=0&query=burger&type=main+course"

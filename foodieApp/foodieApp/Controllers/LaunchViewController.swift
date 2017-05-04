@@ -102,7 +102,7 @@ class LaunchViewController: UIViewController, UITextFieldDelegate {
         }
         
         if let auth = FIRAuth.auth(), let user = auth.currentUser {
-            print("\n\n\(user.email) Signed In!\n")
+            print("\n\n\(user.email ?? "BIGUSEREMAIL PROBLEM") Signed In!\n")
         }else {
             print("\n\n NOONE Signed In!\n")
         }
