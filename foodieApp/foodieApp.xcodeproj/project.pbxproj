@@ -51,6 +51,7 @@
 		E0F0565A1E9A63A40074186A /* MealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */; };
 		E0F0565C1E9A719A0074186A /* MealHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */; };
 		E0F0565E1E9B1BF80074186A /* ActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */; };
+		E0FC755F1EB91DD900B6CF09 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0FC755E1EB91DD900B6CF09 /* icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		E0F056591E9A63A40074186A /* MealCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealCollectionViewCell.swift; sourceTree = "<group>"; };
 		E0F0565B1E9A719A0074186A /* MealHeaderReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealHeaderReusableView.swift; sourceTree = "<group>"; };
 		E0F0565D1E9B1BF80074186A /* ActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorController.swift; sourceTree = "<group>"; };
+		E0FC755E1EB91DD900B6CF09 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 		E03965141EB1514200E7ACA9 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
+				E0FC755E1EB91DD900B6CF09 /* icon.png */,
 				E03965271EB16E7C00E7ACA9 /* launchScreen.mp4 */,
 				E03965211EB16B3300E7ACA9 /* givingIcon.png */,
 				E03965151EB1514200E7ACA9 /* fullKitchen.jpeg */,
@@ -353,6 +356,7 @@
 				E0CFDC321EA81C950049F9F3 /* maincoursesoftheweekjpeg.jpeg in Resources */,
 				E039651C1EB1514200E7ACA9 /* settingTable.jpg in Resources */,
 				E039651D1EB1514200E7ACA9 /* silverware.jpg in Resources */,
+				E0FC755F1EB91DD900B6CF09 /* icon.png in Resources */,
 				E0CFDC2F1EA81C950049F9F3 /* quickbreakfast.jpeg in Resources */,
 				E0CFDC341EA81C950049F9F3 /* recoverysmoothies.jpg in Resources */,
 				E0CFDC331EA81C950049F9F3 /* mouthwateringvegandinners.jpeg in Resources */,
@@ -575,6 +579,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.DLopezPrograms.foodieApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -589,6 +594,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.DLopezPrograms.foodieApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
